@@ -1,0 +1,65 @@
+    <!-- CONTATO -->
+    <section class="contact" id="contato">
+        <div class="contact-info">
+            <div class="section-eyebrow">Contato</div>
+            <h2 class="section-title reveal" style="color:var(--cream);">Inicie sua consulta com especialistas</h2>
+
+            <div class="contact-detail">
+                <div class="contact-detail-icon">📍</div>
+                <div class="contact-detail-text">
+                    <span>Endereço</span>
+                    <p>Rua Roberto Lúcio Aroeira, 417, Sala 01<br>Bairro Itapoã — Belo Horizonte / MG</p>
+                </div>
+            </div>
+
+            <div class="contact-detail">
+                <div class="contact-detail-icon">📞</div>
+                <div class="contact-detail-text">
+                    <span>Telefone / WhatsApp</span>
+                    <p>(31) 9.9224-6996</p>
+                </div>
+            </div>
+
+            <div class="contact-detail">
+                <div class="contact-detail-icon">✉</div>
+                <div class="contact-detail-text">
+                    <span>E-mail</span>
+                    <p>contato@cardosoebruno.adv.br</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nome completo</label>
+                    <input type="text" placeholder="Seu nome">
+                </div>
+                <div class="form-group">
+                    <label>Telefone</label>
+                    <input type="tel" placeholder="(31) 9 0000-0000">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" placeholder="seu@email.com">
+            </div>
+            <div class="form-group">
+                <label>Área de interesse</label>
+                <select>
+                    <option value="">Selecione uma especialidade</option>
+                    <option>Direito Civil</option>
+                    <option>Direito Administrativo</option>
+                    <option>Contratos</option>
+                    <option>Família e Sucessões</option>
+                    <option>Advocacia Colaborativa</option>
+                    <option>Outro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Descreva brevemente sua situação</label>
+                <textarea placeholder="Como podemos ajudá-lo?"></textarea>
+            </div>
+            <button class="btn-primary" style="align-self:flex-start; padding: 1rem 2.5rem;">Enviar Consulta</button>
+        </div>
+    </section>
