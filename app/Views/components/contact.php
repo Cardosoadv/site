@@ -29,24 +29,24 @@
             </div>
         </div>
 
-        <div class="contact-form">
+        <form class="contact-form">
             <div class="form-row">
                 <div class="form-group">
-                    <label>Nome completo</label>
-                    <input type="text" placeholder="Seu nome">
+                    <label for="contact-name">Nome completo</label>
+                    <input id="contact-name" type="text" placeholder="Seu nome" required>
                 </div>
                 <div class="form-group">
-                    <label>Telefone</label>
-                    <input type="tel" placeholder="(31) 9 0000-0000">
+                    <label for="contact-phone">Telefone</label>
+                    <input id="contact-phone" type="tel" placeholder="(31) 9 0000-0000">
                 </div>
             </div>
             <div class="form-group">
-                <label>E-mail</label>
-                <input type="email" placeholder="seu@email.com">
+                <label for="contact-email">E-mail</label>
+                <input id="contact-email" type="email" placeholder="seu@email.com" required>
             </div>
             <div class="form-group">
-                <label>Área de interesse</label>
-                <select>
+                <label for="contact-subject">Área de interesse</label>
+                <select id="contact-subject">
                     <option value="">Selecione uma especialidade</option>
                     <option>Direito Civil</option>
                     <option>Direito Administrativo</option>
@@ -57,9 +57,9 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Descreva brevemente sua situação</label>
-                <textarea placeholder="Como podemos ajudá-lo?"></textarea>
+                <label for="contact-message">Descreva brevemente sua situação</label>
+                <textarea id="contact-message" placeholder="Como podemos ajudá-lo?"></textarea>
             </div>
-            <button class="btn-primary" style="align-self:flex-start; padding: 1rem 2.5rem;">Enviar Consulta</button>
-        </div>
+            <button type="submit" class="btn-primary" style="align-self:flex-start; padding: 1rem 2.5rem;">Enviar Consulta</button>
+        </form>
     </section>
