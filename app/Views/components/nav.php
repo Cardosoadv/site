@@ -9,7 +9,7 @@
             <li><a href="#administrativo">Direito Administrativo</a></li>
             <li><a href="#contato">Contato</a></li>
             <li>
-                <a href="<?= base_url('noticias'); ?>">Notícias</a>
+                <a href="#">Notícias</a>
             </li>
         </ul>
         <button class="nav-cta">Consulta Inicial</button>
