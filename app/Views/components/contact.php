@@ -29,37 +29,37 @@
             </div>
         </div>
 
-        <div class="contact-form">
+        <form class="contact-form" action="#" method="POST">
             <div class="form-row">
                 <div class="form-group">
-                    <label>Nome completo</label>
-                    <input type="text" placeholder="Seu nome">
+                    <label for="nome">Nome completo <span class="text-red-500" aria-hidden="true">*</span></label>
+                    <input id="nome" name="nome" type="text" placeholder="Seu nome" required aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label>Telefone</label>
-                    <input type="tel" placeholder="(31) 9 0000-0000">
+                    <label for="telefone">Telefone</label>
+                    <input id="telefone" name="telefone" type="tel" placeholder="(31) 9 0000-0000">
                 </div>
             </div>
             <div class="form-group">
-                <label>E-mail</label>
-                <input type="email" placeholder="seu@email.com">
+                <label for="email">E-mail <span class="text-red-500" aria-hidden="true">*</span></label>
+                <input id="email" name="email" type="email" placeholder="seu@email.com" required aria-required="true">
             </div>
             <div class="form-group">
-                <label>Área de interesse</label>
-                <select>
+                <label for="area">Área de interesse <span class="text-red-500" aria-hidden="true">*</span></label>
+                <select id="area" name="area" required aria-required="true">
                     <option value="">Selecione uma especialidade</option>
-                    <option>Direito Civil</option>
-                    <option>Direito Administrativo</option>
-                    <option>Contratos</option>
-                    <option>Família e Sucessões</option>
-                    <option>Advocacia Colaborativa</option>
-                    <option>Outro</option>
+                    <option value="direito-civil">Direito Civil</option>
+                    <option value="direito-administrativo">Direito Administrativo</option>
+                    <option value="contratos">Contratos</option>
+                    <option value="familia-e-sucessoes">Família e Sucessões</option>
+                    <option value="advocacia-colaborativa">Advocacia Colaborativa</option>
+                    <option value="outro">Outro</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Descreva brevemente sua situação</label>
-                <textarea placeholder="Como podemos ajudá-lo?"></textarea>
+                <label for="mensagem">Descreva brevemente sua situação <span class="text-red-500" aria-hidden="true">*</span></label>
+                <textarea id="mensagem" name="mensagem" placeholder="Como podemos ajudá-lo?" required aria-required="true"></textarea>
             </div>
-            <button class="btn-primary" style="align-self:flex-start; padding: 1rem 2.5rem;">Enviar Consulta</button>
-        </div>
+            <button type="submit" class="btn-primary" style="align-self:flex-start; padding: 1rem 2.5rem;">Enviar Consulta</button>
+        </form>
     </section>
