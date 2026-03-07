@@ -11,5 +11,7 @@ $routes->get('/', 'Home::index');
 $routes->get('/noticias', 'Noticias::index');
 $routes->get('/noticias/(:segment)', 'Noticias::show/$1');
 
+$routes->post('/contact', 'Home::receiveContact');
+
 
 service('auth')->routes($routes);

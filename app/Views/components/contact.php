@@ -29,7 +29,23 @@
             </div>
         </div>
 
-        <form class="contact-form">
+        <?php if (session()->getFlashdata('success')): ?>
+            <div class="alert alert-success" style="padding: 1rem; background-color: #d4edda; color: #155724; border-radius: 4px; margin-bottom: 2rem;">
+                <?= session()->getFlashdata('success') ?>
+            </div>
+        <?php endif; ?>
+        <?php if (session()->getFlashdata('errors')): ?>
+            <div class="alert alert-danger" style="padding: 1rem; background-color: #f8d7da; color: #721c24; border-radius: 4px; margin-bottom: 2rem;">
+                <ul style="margin: 0; padding-left: 20px;">
+                    <?php foreach (session()->getFlashdata('errors') as $error): ?>
+                        <li><?= esc($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
+        <form class="contact-form" action="<?= base_url('contact') ?>" method="POST">
+            <?= csrf_field() ?>
             <div class="form-row">
                 <div class="form-group">
                     <label for="nome">Nome completo</label>
@@ -48,12 +64,18 @@
                 <label for="area">Área de interesse</label>
                 <select id="area" name="area">
                     <option value="">Selecione uma especialidade</option>
-                    <option>Direito Civil</option>
-                    <option>Direito Administrativo</option>
-                    <option>Contratos</option>
-                    <option>Família e Sucessões</option>
-                    <option>Advocacia Colaborativa</option>
-                    <option>Outro</option>
+                    <?php if (isset($areas) && !empty($areas)): ?>
+                        <?php foreach ($areas as $a): ?>
+                            <option value="<?= esc($a['id']) ?>"><?= esc($a['area_interesse']) ?></option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option value="1">Direito Civil</option>
+                        <option value="2">Direito Administrativo</option>
+                        <option value="3">Contratos</option>
+                        <option value="4">Família e Sucessões</option>
+                        <option value="5">Advocacia Colaborativa</option>
+                        <option value="6">Outro</option>
+                    <?php endif; ?>
                 </select>
             </div>
             <div class="form-group">
