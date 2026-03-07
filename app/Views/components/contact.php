@@ -33,16 +33,16 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="nome">Nome completo</label>
-                    <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+                    <input type="text" id="nome" name="nome" placeholder="Seu nome" required autocomplete="name">
                 </div>
                 <div class="form-group">
                     <label for="telefone">Telefone</label>
-                    <input type="tel" id="telefone" name="telefone" placeholder="(31) 9 0000-0000">
+                    <input type="tel" id="telefone" name="telefone" placeholder="(31) 9 0000-0000" autocomplete="tel">
                 </div>
             </div>
             <div class="form-group">
                 <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                <input type="email" id="email" name="email" placeholder="seu@email.com" required autocomplete="email">
             </div>
             <div class="form-group">
                 <label for="area">Área de interesse</label>
