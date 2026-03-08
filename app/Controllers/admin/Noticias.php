@@ -3,9 +3,17 @@
 namespace App\Controllers\admin;
 
 use App\Controllers\BaseController;
+use App\Services\NewsService;
 
 class Noticias extends BaseController
 {
+
+    private $service;
+
+    public function __construct()
+    {
+        $this->service = new NewsService();
+    }
     public function index(): string
     {
         return view('admin/noticias/index');
@@ -18,17 +26,23 @@ class Noticias extends BaseController
 
     public function create(): string
     {
-        return view('admin/noticias/create');
+        $data['title'] = 'Criar Notícia';
+        $data['categories'] = $this->service->getCategories();
+        return view('noticias/form', $data);
     }
 
     public function edit($slug): string
     {
-        return view('admin/noticias/edit');
+        $data['title'] = 'Editar Notícia';
+        $data['news'] = $this->service->getBySlug($slug);
+        return view('admin/noticias/form');
     }
 
-    public function store(): string
+    public function store()
     {
-        return view('admin/noticias/store');
+        $data = $this->request->getPost();
+        $this->service->create($data);
+        return redirect()->to(base_url('admin/noticias'));
     }
 
     public function update($slug): string
@@ -36,7 +50,7 @@ class Noticias extends BaseController
         return view('admin/noticias/update');
     }
 
-    public function destroy($slug): string
+    public function destroy($slug)
     {
         return view('admin/noticias/destroy');
     }
