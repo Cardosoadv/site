@@ -12,5 +12,5 @@
                 <a href="#">Notícias</a>
             </li>
         </ul>
-        <button class="nav-cta">Consulta Inicial</button>
+        <button class="nav-cta" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})" aria-label="Agendar consulta inicial">Consulta Inicial</button>
     </nav>
