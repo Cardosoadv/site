@@ -8,6 +8,17 @@
   --white: #ffffff;
   --gray: #8a8a8a;
   --gray-light: #d4d0c8;
+
+  /* Bootstrap 5 Overrides */
+  --bs-primary: var(--gold);
+  --bs-secondary: var(--gray);
+  --bs-dark: var(--navy);
+  --bs-light: var(--cream);
+  --bs-body-bg: var(--navy);
+  --bs-body-color: var(--cream);
+  --bs-link-color: var(--gold);
+  --bs-link-hover-color: var(--gold-light);
+  --bs-link-decoration: none;
 }
 
 *,
@@ -27,6 +38,16 @@ body {
   background: var(--navy);
   color: var(--cream);
   overflow-x: hidden;
+}
+
+a {
+  color: var(--bs-link-color);
+  text-decoration: var(--bs-link-decoration);
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: var(--bs-link-hover-color);
 }
 
 /* ─── NAV ─── */
