@@ -1,5 +1,5 @@
     <!-- NAV -->
-    <nav>
+    <nav aria-label="Navegação principal">
         <div class="logo">
             <img src="<?= base_url('public/dist/imgs/logo.png'); ?>" alt="Logo Cardoso & Bruno" style="max-height: 70px; width: auto; object-fit: contain;">
         </div>
@@ -12,5 +12,5 @@
                 <a href="#">Notícias</a>
             </li>
         </ul>
-        <button class="nav-cta">Consulta Inicial</button>
+        <a href="<?= base_url('#contato') ?>" class="nav-cta" style="display:inline-block; text-align:center;">Consulta Inicial</a>
     </nav>
