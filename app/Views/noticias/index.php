@@ -21,25 +21,26 @@
         </div>
 
         <div class="news-grid">
-            <!-- Os cards seriam gerados via loop do Controller -->
-            <?php for($i=1; $i<=6; $i++): ?>
+            <?php if (!empty($news)): ?>
+            <?php foreach ($news as $article): ?>
             <article class="news-card reveal">
-                <div class="news-card-img">
-                    <div class="news-tag">Especialidade</div>
-                    <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80" alt="Notícia">
-                </div>
                 <div class="news-card-content">
-                    <h3 class="news-card-title">Tendências do Contencioso Administrativo em 2026</h3>
+                    <h3 class="news-card-title"><?= esc($article['title']) ?></h3>
                     <p class="news-card-excerpt">
-                        Uma análise profunda sobre como as novas tecnologias estão moldando a relação entre o Estado e os particulares no âmbito judicial.
+                        <?= esc($article['summary']) ?>
                     </p>
                     <div class="news-card-footer">
-                        <span class="news-date">08 Mar, 2026</span>
-                        <a href="<?= base_url('noticias/show/exemplo') ?>" class="card-tag" style="margin:0;">Ler mais</a>
+                        <span class="news-date"><?= date('d M, Y', strtotime($article['published_at'])) ?></span>
+                        <a href="<?= base_url('noticias/' . $article['slug']) ?>" class="card-tag" style="margin:0;">Ler mais</a>
                     </div>
                 </div>
             </article>
-            <?php endfor; ?>
+            <?php endforeach; ?>
+            <?php else: ?>
+            <div class="text-center py-5 col-span-full">
+                <p style="color: var(--cream-dark);">Nenhum artigo publicado ainda.</p>
+            </div>
+            <?php endif; ?>
         </div>
 
         <!-- Paginação customizada -->

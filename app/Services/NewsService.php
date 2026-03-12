@@ -29,7 +29,7 @@ class NewsService extends BaseService
         
         // Auto-generate slug from title if not provided or empty
         if (empty($data['slug']) && !empty($data['title'])) {
-            $data['slug'] = url_title($data['title'], '-', true);
+            $data['slug'] = $this->makeSlug($data['title']);
         }
 
         // Auto-assign author if using Shield
@@ -57,7 +57,7 @@ class NewsService extends BaseService
 
         // Update slug if title changed and slug is not manually changed
         if (empty($data['slug']) && !empty($data['title'])) {
-            $data['slug'] = url_title($data['title'], '-', true);
+            $data['slug'] = $this->makeSlug($data['title']);
         }
 
         $updated = $this->repository->update($id, $data);
@@ -78,5 +78,24 @@ class NewsService extends BaseService
         }
 
         return $deleted;
+    }
+
+    /**
+     * Gera slug URL-seguro a partir de um título,
+     * transliterando acentos e caracteres especiais para ASCII.
+     */
+    private function makeSlug(string $title): string
+    {
+        helper('url');
+
+        // Transliterate accented chars to ASCII (e.g. "ã" -> "a", "ê" -> "e")
+        $ascii = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title);
+
+        // Fallback: remove non-ASCII chars if iconv fails
+        if ($ascii === false || $ascii === '') {
+            $ascii = preg_replace('/[^\x00-\x7F]/u', '', $title);
+        }
+
+        return url_title($ascii, '-', true);
     }
 }
