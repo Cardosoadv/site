@@ -721,15 +721,29 @@ footer {
 
 /* --- NEWS MODULE REFINEMENTS --- */
 
+/* A nav é position:fixed — o <main> precisa de espaço para não ficar atrás dela */
+.page-content {
+  padding-top: 80px; /* altura aproximada da nav */
+}
+
 /* Hero Section para Notícias */
 .news-hero {
   background:
     linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)),
     url("https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1600&q=80")
       center/cover no-repeat;
-  padding: 6rem 5vw 4rem;
+  padding: 5rem 5vw 5rem;
   text-align: center;
   border-bottom: 2px solid var(--gold);
+}
+
+/* Eyebrow centralizado no hero (sem a linha decorativa ::before) */
+.news-hero-eyebrow {
+  display: flex;
+  justify-content: center;
+}
+.news-hero-eyebrow::before {
+  display: none !important;
 }
 
 /* Grid e Cards */
@@ -1024,4 +1038,60 @@ footer {
   color: var(--cream);
   margin-bottom: 0.5rem;
   letter-spacing: 0.1em;
+}
+
+/* ─── NEWS: FILTROS ─── */
+.news-filter-btn {
+  padding: 0.5rem 1.2rem !important;
+  font-size: 0.65rem !important;
+}
+
+/* ─── NEWS: PAGINAÇÃO CUSTOMIZADA ─── */
+/* Usa classes próprias (news-pagination/news-page-item/news-page-link)
+   para não conflitar com o Bootstrap e manter o tema do site */
+.news-pagination {
+  display: flex;
+  list-style: none;
+  gap: 0.4rem;
+  padding: 0;
+  margin: 0;
+}
+
+.news-page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding: 0 0.75rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  color: var(--navy);
+  background: transparent;
+  border: 1px solid rgba(13, 27, 42, 0.2);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.news-page-link:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.news-page-item.active .news-page-link {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.news-page-item.disabled .news-page-link {
+  color: var(--gray-light);
+  border-color: rgba(13, 27, 42, 0.1);
+  pointer-events: none;
+  cursor: default;
 }
