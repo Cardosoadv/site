@@ -719,27 +719,379 @@ footer {
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
-/* ─── RESPONSIVE (basic) ─── */
-@media (max-width: 900px) {
-  .hero {
-    grid-template-columns: 1fr;
+/* --- NEWS MODULE REFINEMENTS --- */
+
+/* A nav é position:fixed — o <main> precisa de espaço para não ficar atrás dela */
+.page-content {
+  padding-top: 80px; /* altura aproximada da nav */
+}
+
+/* Hero Section para Notícias */
+.news-hero {
+  background:
+    linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)),
+    url("https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1600&q=80")
+      center/cover no-repeat;
+  padding: 5rem 5vw 5rem;
+  text-align: center;
+  border-bottom: 2px solid var(--gold);
+}
+
+/* Eyebrow centralizado no hero (sem a linha decorativa ::before) */
+.news-hero-eyebrow {
+  display: flex;
+  justify-content: center;
+}
+.news-hero-eyebrow::before {
+  display: none !important;
+}
+
+/* Grid e Cards */
+.news-list-section {
+  background-color: var(--cream);
+  padding: 4rem 5vw;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2.5rem;
+}
+
+.news-card {
+  background: var(--white);
+  border: none;
+  border-bottom: 3px solid transparent;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 10px 30px rgba(13, 27, 42, 0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-card:hover {
+  transform: translateY(-10px);
+  border-bottom: 3px solid var(--gold);
+  box-shadow: 0 20px 40px rgba(13, 27, 42, 0.1);
+}
+
+.news-card-img {
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.news-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.news-card:hover .news-card-img img {
+  transform: scale(1.08);
+}
+
+.news-tag {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.4rem 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.news-card-content {
+  padding: 2rem;
+  flex-grow: 1;
+}
+
+.news-card-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-card-excerpt {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.news-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 1rem;
+  margin-top: auto;
+}
+
+.news-date {
+  font-size: 0.7rem;
+  color: var(--gray);
+  text-transform: uppercase;
+}
+
+/* Artigo Interno (Show) */
+.article-container {
+  background: var(--white);
+  max-width: 900px;
+  margin: -4rem auto 4rem;
+  padding: 4rem 5rem;
+  box-shadow: 0 30px 60px rgba(13, 27, 42, 0.1);
+  position: relative;
+  z-index: 5;
+}
+
+.article-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.article-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  color: var(--navy);
+  line-height: 1.1;
+  margin: 1.5rem 0;
+}
+
+.article-meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 0.8rem;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.article-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #333;
+}
+
+.article-content p {
+  margin-bottom: 1.8rem;
+}
+
+.article-content h2,
+.article-content h3 {
+  font-family: "Cormorant Garamond", serif;
+  color: var(--navy);
+  margin: 2.5rem 0 1.2rem;
+}
+
+.article-content blockquote {
+  border-left: 4px solid var(--gold);
+  padding-left: 2rem;
+  margin: 3rem 0;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--navy-mid);
+}
+
+@media (max-width: 768px) {
+  .article-container {
+    margin: 0;
+    padding: 3rem 1.5rem;
   }
-  .hero-right {
-    display: none;
-  }
-  .expertise-grid {
-    grid-template-columns: 1fr;
-  }
-  .pillars,
-  .contact {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-  .highlight-split {
-    grid-template-columns: 1fr;
-  }
-  .nav-links,
-  .nav-cta {
-    display: none;
-  }
+}
+
+/* Estilos Customizados para o Formulário de Notícia */
+.form-container {
+  background-color: var(--navy);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  margin-bottom: 50px;
+}
+
+.image-upload-wrapper {
+  border: 2px dashed rgba(201, 168, 76, 0.4);
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  background-color: var(--navy-mid);
+  transition: all 0.3s ease;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.image-upload-wrapper:hover {
+  border-color: var(--gold, #d4af37);
+  background-color: rgba(13, 27, 42, 0.8);
+}
+
+.upload-placeholder {
+  cursor: pointer;
+  color: var(--gray-light);
+}
+
+.upload-placeholder i {
+  font-size: 3rem;
+  color: var(--gold, #d4af37);
+  margin-bottom: 10px;
+}
+
+.editor-toolbar {
+  background-color: var(--navy-mid);
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.editor-toolbar button {
+  background: var(--navy);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: var(--cream);
+  transition: background 0.2s;
+}
+
+.editor-toolbar button:hover {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background-color: rgba(201, 168, 76, 0.3);
+  margin: 0 5px;
+}
+
+.editor-content {
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  border-radius: 0 0 8px 8px;
+  padding: 20px;
+  min-height: 400px;
+  background-color: var(--navy-mid);
+  color: var(--cream);
+  outline: none;
+  overflow-y: auto;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.editor-content:empty:before {
+  content: attr(aria-placeholder);
+  color: var(--gray);
+  pointer-events: none;
+  display: block;
+}
+
+.editor-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 15px 0;
+}
+
+/* Extras para os Inputs do Form */
+.form-container .form-control {
+  background: var(--navy-mid);
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  color: var(--cream);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.form-container .form-control:focus {
+  background: var(--navy-mid);
+  color: var(--white);
+  border-color: var(--gold, #d4af37);
+  box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+  outline: none;
+}
+
+.form-container .form-label {
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+/* ─── NEWS: FILTROS ─── */
+.news-filter-btn {
+  padding: 0.5rem 1.2rem !important;
+  font-size: 0.65rem !important;
+}
+
+/* ─── NEWS: PAGINAÇÃO CUSTOMIZADA ─── */
+/* Usa classes próprias (news-pagination/news-page-item/news-page-link)
+   para não conflitar com o Bootstrap e manter o tema do site */
+.news-pagination {
+  display: flex;
+  list-style: none;
+  gap: 0.4rem;
+  padding: 0;
+  margin: 0;
+}
+
+.news-page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding: 0 0.75rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  color: var(--navy);
+  background: transparent;
+  border: 1px solid rgba(13, 27, 42, 0.2);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.news-page-link:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.news-page-item.active .news-page-link {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.news-page-item.disabled .news-page-link {
+  color: var(--gray-light);
+  border-color: rgba(13, 27, 42, 0.1);
+  pointer-events: none;
+  cursor: default;
 }

@@ -2,61 +2,46 @@
 
 <?= $this->section('content') ?>
 
+<header class="news-hero">
+    <div class="section-eyebrow news-hero-eyebrow">Conteúdo Jurídico</div>
+    <h1 class="hero-title" style="font-size: 3.5rem;">Artigos & <em>Atualizações</em></h1>
+    <p class="hero-sub mx-auto" style="color: var(--cream-dark);">
+        Análise técnica sobre as principais mudanças legislativas e jurisprudenciais do Direito Brasileiro.
+    </p>
+</header>
+
 <section class="news-list-section">
-    <div class="news-header">
-        <h1 class="news-main-title">Notícias e Artigos</h1>
-        <div class="gold-line"></div>
-        <p class="news-subtitle">Acompanhe as últimas novidades, artigos jurídicos e atualizações do nosso escritório.</p>
-    </div>
+    <div class="container">
 
-    <div class="news-grid">
-        <!-- Exemplo de Card de Notícia 1 -->
-        <article class="news-card">
-            <div class="news-card-img">
-                <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80" alt="Resumo da notícia">
-            </div>
-            <div class="news-card-content">
-                <span class="news-tag">Direito Civil</span>
-                <h3 class="news-card-title">Nova legislação sobre contratos digitais entra em vigor</h3>
-                <p class="news-card-excerpt">Entenda como as recentes mudanças afetam a validade de assinaturas eletrônicas e a elaboração de contratos no meio digital...</p>
-                <div class="news-card-footer">
-                    <span class="news-date">10 de Outubro, 2023</span>
-                    <a href="<?= base_url('noticias/show/nova-legislacao-contratos') ?>" class="news-read-more">Ler artigo &rarr;</a>
-                </div>
-            </div>
-        </article>
+        <!-- Filtros Rápidos -->
+        <div class="d-flex justify-content-center gap-3 mb-5 flex-wrap">
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1.2rem;font-size:0.65rem;">Todos</a>
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1.2rem;font-size:0.65rem;">Direito Civil</a>
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1.2rem;font-size:0.65rem;">Administrativo</a>
+            <a href="#" class="btn-ghost" style="padding:0.5rem 1.2rem;font-size:0.65rem;">Contratos</a>
+        </div>
 
-        <!-- Exemplo de Card de Notícia 2 -->
-        <article class="news-card">
-            <div class="news-card-img">
-                <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=600&q=80" alt="Resumo da notícia">
-            </div>
-            <div class="news-card-content">
-                <span class="news-tag">Direito Administrativo</span>
-                <h3 class="news-card-title">Licitações públicas: o que muda com a nova lei?</h3>
-                <p class="news-card-excerpt">Uma análise detalhada das principais alterações trazidas pelo novo marco legal das licitações e contratos administrativos.</p>
-                <div class="news-card-footer">
-                    <span class="news-date">05 de Outubro, 2023</span>
-                    <a href="<?= base_url('noticias/show/licitacoes-nova-lei') ?>" class="news-read-more">Ler artigo &rarr;</a>
+        <!-- Grid de Notícias -->
+        <div class="news-grid">
+            <?php if (!empty($news)): ?>
+                <?php foreach ($news as $article): ?>
+                <article class="news-card reveal">
+                    <div class="news-card-content">
+                        <h3 class="news-card-title"><?= esc($article['title']) ?></h3>
+                        <p class="news-card-excerpt"><?= esc($article['summary']) ?></p>
+                        <div class="news-card-footer">
+                            <span class="news-date"><?= date('d M, Y', strtotime($article['published_at'])) ?></span>
+                            <a href="<?= base_url('noticias/' . $article['slug']) ?>" class="card-tag" style="margin:0;">Ler mais</a>
+                        </div>
+                    </div>
+                </article>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="text-center py-5" style="grid-column: 1 / -1;">
+                    <p style="color: var(--gray);">Nenhum artigo publicado ainda.</p>
                 </div>
-            </div>
-        </article>
-
-        <!-- Exemplo de Card de Notícia 3 -->
-        <article class="news-card">
-            <div class="news-card-img">
-                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80" alt="Resumo da notícia">
-            </div>
-            <div class="news-card-content">
-                <span class="news-tag">Institucional</span>
-                <h3 class="news-card-title">Cardoso & Bruno inaugura nova filial em São Paulo</h3>
-                <p class="news-card-excerpt">Expandindo nossa atuação para melhor atender nossos clientes, anunciamos a abertura do nosso novo escritório na capital paulista.</p>
-                <div class="news-card-footer">
-                    <span class="news-date">28 de Setembro, 2023</span>
-                    <a href="<?= base_url('noticias/show/nova-filial-sp') ?>" class="news-read-more">Ler artigo &rarr;</a>
-                </div>
-            </div>
-        </article>
+            <?php endif; ?>
+        </div>
     </div>
 </section>
 
