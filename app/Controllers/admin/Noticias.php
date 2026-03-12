@@ -41,17 +41,34 @@ class Noticias extends BaseController
     public function store()
     {
         $data = $this->request->getPost();
-        $this->service->create($data);
-        return redirect()->to(base_url('admin/noticias'));
+
+        try {
+            $this->service->createNews($data);
+            return redirect()->to(base_url('admin/noticias'))->with('success', 'Notícia criada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
-    public function update($slug): string
+    public function update($id)
     {
-        return view('admin/noticias/update');
+        $data = $this->request->getPost();
+
+        try {
+            $this->service->updateNews($id, $data);
+            return redirect()->to(base_url('admin/noticias'))->with('success', 'Notícia atualizada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
-    public function destroy($slug)
+    public function destroy($id)
     {
-        return view('admin/noticias/destroy');
+        try {
+            $this->service->deleteNews($id);
+            return redirect()->to(base_url('admin/noticias'))->with('success', 'Notícia excluída com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 }

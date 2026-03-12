@@ -22,4 +22,61 @@ class NewsService extends BaseService
     {
         return $this->repository->getCategories();
     }
+
+    public function createNews(array $data): int|string
+    {
+        helper('url');
+        
+        // Auto-generate slug from title if not provided or empty
+        if (empty($data['slug']) && !empty($data['title'])) {
+            $data['slug'] = url_title($data['title'], '-', true);
+        }
+
+        // Auto-assign author if using Shield
+        if (empty($data['author_id']) && auth()->loggedIn()) {
+            $data['author_id'] = auth()->id();
+        }
+
+        // Set published_at if publishing now and no date is provided
+        if (isset($data['status']) && $data['status'] === 'published' && empty($data['published_at'])) {
+            $data['published_at'] = date('Y-m-d H:i:s');
+        }
+
+        $id = $this->repository->create($data);
+
+        if (!$id) {
+            throw new \Exception('Erro ao criar a notícia. Verifique os dados e tente novamente.');
+        }
+
+        return $id;
+    }
+
+    public function updateNews(int $id, array $data): bool
+    {
+        helper('url');
+
+        // Update slug if title changed and slug is not manually changed
+        if (empty($data['slug']) && !empty($data['title'])) {
+            $data['slug'] = url_title($data['title'], '-', true);
+        }
+
+        $updated = $this->repository->update($id, $data);
+
+        if (!$updated) {
+            throw new \Exception('Erro ao atualizar a notícia.');
+        }
+
+        return $updated;
+    }
+
+    public function deleteNews(int $id): bool
+    {
+        $deleted = $this->repository->delete($id);
+
+        if (!$deleted) {
+            throw new \Exception('Erro ao excluir a notícia.');
+        }
+
+        return $deleted;
+    }
 }

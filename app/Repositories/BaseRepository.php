@@ -39,7 +39,7 @@ abstract class BaseRepository
     public function __construct(Model $model)
     {
         $this->model       = $model;
-        $this->cache       = service('cache');
+        $this->cache       = service('cache') ?? null;
         $this->cacheKey    = $model->table;
     }
 
@@ -62,7 +62,7 @@ abstract class BaseRepository
         $params = [$select, $where, $orderBy, $direction, $joins];
         $cacheName = $this->generateKey('all', $params);
 
-        if ($this->cacheEnabled && ($cached = $this->cache->get($cacheName)) !== null) {
+        if ($this->cacheEnabled && $this->cache !== null && ($cached = $this->cache->get($cacheName)) !== null) {
             return $cached;
         }
 
@@ -82,7 +82,7 @@ abstract class BaseRepository
 
         $data = $builder->findAll();
 
-        if ($this->cacheEnabled) {
+        if ($this->cacheEnabled && $this->cache !== null) {
             $this->cache->save($cacheName, $data, $this->cacheTime);
         }
 
@@ -99,13 +99,13 @@ abstract class BaseRepository
     {
         $cacheName = $this->generateKey('id_' . $id, $select);
 
-        if ($this->cacheEnabled && ($cached = $this->cache->get($cacheName)) !== null) {
+        if ($this->cacheEnabled && $this->cache !== null && ($cached = $this->cache->get($cacheName)) !== null) {
             return $cached;
         }
 
         $data = $this->model->select($select)->find($id);
 
-        if ($this->cacheEnabled && $data) {
+        if ($this->cacheEnabled && $this->cache !== null && $data) {
             $this->cache->save($cacheName, $data, $this->cacheTime);
         }
 
@@ -163,7 +163,7 @@ abstract class BaseRepository
      */
     public function clearCache(): void
     {
-        if ($this->cacheEnabled) {
+        if ($this->cacheEnabled && $this->cache !== null) {
             // Tentativa de limpeza por prefixo
             $this->cache->deleteMatching($this->cacheKey . '*');
         }

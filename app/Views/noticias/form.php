@@ -18,19 +18,30 @@
                 <input type="text" name="title" id="title" class="form-control form-control-lg" required placeholder="Digite o título principal">
             </div>
 
-            <div class="mb-4">
-                <label class="form-label fw-bold">Imagem em Destaque</label>
-                <div class="image-upload-wrapper" id="imageUploadWrapper">
-                    <input type="file" name="featured_image" id="featured_image" class="d-none" accept="image/*">
-
-                    <div class="upload-placeholder" id="uploadPlaceholder" onclick="document.getElementById('featured_image').click()">
-                        <i class="bi bi-cloud-arrow-up"></i>
-                        <p class="mb-0 fw-semibold">Clique para fazer upload da imagem</p>
-                        <small class="text-muted">JPG, PNG ou WebP (Máx. 2MB)</small>
-                    </div>
-
-                    <img id="imagePreview" src="" alt="Vista prévia da imagem" class="d-none img-fluid rounded" style="max-height: 300px; object-fit: cover; cursor: pointer;" onclick="document.getElementById('featured_image').click()" title="Clique para trocar a imagem">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label for="category_id" class="form-label fw-bold">Categoria</label>
+                    <select name="category_id" id="category_id" class="form-select" required>
+                        <option value="" disabled selected>Selecione uma categoria</option>
+                        <?php if (isset($categories)): ?>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= $category['id'] ?>"><?= esc($category['name']) ?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
                 </div>
+                <div class="col-md-6">
+                    <label for="status" class="form-label fw-bold">Status</label>
+                    <select name="status" id="status" class="form-select" required>
+                        <option value="draft">Rascunho</option>
+                        <option value="published">Publicado</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="summary" class="form-label fw-bold">Resumo / Linha Fina (Summary)</label>
+                <textarea name="summary" id="summary" class="form-control" rows="3" required placeholder="Digite um breve resumo da notícia"></textarea>
             </div>
 
             <!-- Editor de Texto Rico (Rich Text) -->
@@ -76,6 +87,23 @@
                 </div>
             </div>
 
+            <div class="row mb-4 mt-4">
+                <div class="col-md-5">
+                    <label for="meta_title" class="form-label fw-bold">Meta Title (SEO)</label>
+                    <input type="text" name="meta_title" id="meta_title" class="form-control" placeholder="Título para os Buscadores (Opcional)">
+                </div>
+                <div class="col-md-7">
+                    <label for="meta_description" class="form-label fw-bold">Meta Description (SEO)</label>
+                    <textarea name="meta_description" id="meta_description" class="form-control" rows="2" placeholder="Descrição para os Buscadores (Opcional)"></textarea>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="published_at" class="form-label fw-bold">Data de Publicação</label>
+                <input type="datetime-local" name="published_at" id="published_at" class="form-control w-auto">
+                <small class="text-muted">Se deixado em branco e o status for "Publicado", a data e hora atual serão usadas.</small>
+            </div>
+
             <div class="d-flex justify-content-end gap-2 mt-5">
                 <a href="<?= base_url('admin/noticias') ?>" class="btn btn-outline-secondary px-4 py-2">Cancelar</a>
                 <button type="submit" class="btn btn-primary px-4 py-2" style="background-color: var(--gold, #d4af37); border: none;">Salvar Notícia</button>
@@ -88,28 +116,6 @@
 
 <?= $this->section('scripts') ?>
 <script>
-    // --- Lógica de Upload da Imagem em Destaque ---
-    const featuredImageInput = document.getElementById('featured_image');
-    const imagePreview = document.getElementById('imagePreview');
-    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-
-    featuredImageInput.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                imagePreview.classList.remove('d-none');
-                uploadPlaceholder.classList.add('d-none');
-            }
-            reader.readAsDataURL(file);
-        } else {
-            imagePreview.src = '';
-            imagePreview.classList.add('d-none');
-            uploadPlaceholder.classList.remove('d-none');
-        }
-    });
-
     // --- Lógica do Editor de Texto Rico (Rich Text Editor) ---
     function formatDoc(cmd, value = null) {
         if (value) {
