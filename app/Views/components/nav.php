@@ -12,5 +12,5 @@
                 <a href="#">Notícias</a>
             </li>
         </ul>
-        <button class="nav-cta">Consulta Inicial</button>
+        <button type="button" class="nav-cta" onclick="document.getElementById('contato')?.scrollIntoView({behavior:'smooth'})">Consulta Inicial</button>
     </nav>
