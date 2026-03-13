@@ -1,68 +1,90 @@
-# CodeIgniter 4 Application Starter
+# Cardoso & Bruno Sociedade de Advogados
 
-## What is CodeIgniter?
+Este projeto é um site desenvolvido com o framework [CodeIgniter 4](https://codeigniter.com/), contando com uma área pública e um painel administrativo seguro.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## 🚀 Funcionalidades
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+- **Área Pública**:
+  - Página Inicial (`Home`).
+  - Listagem e leitura de Notícias publicadas.
+  - Formulário de Contato integrado com o banco de dados.
+- **Sitemap**:
+  - Geração dinâmica de links indexáveis (`/sitemap.xml`).
+  - Sistema de cache persistente para otimização de performance.
+  - Atualização automática baseada em notícias publicadas.
+- **Relatório de Evolução**:
+  - Registro detalhado de melhorias e correções em [.antigravity/report.md].
+- **Painel Administrativo (`/admin`)**:
+  - Acesso restrito para usuários autenticados (utilizando CodeIgniter Shield).
+  - Gerenciamento completo de Notícias (Criar, Editar, Excluir).
+  - Interface moderna com suporte a um tema escuro (Dark Theme), editor Rich Text para o conteúdo das notícias e upload de imagens.
+  - Sistema de alertas e notificações via Toast (JavaScript).
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## 🛠️ Tecnologias Utilizadas
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+- **Backend**: PHP 8.1+, CodeIgniter 4
+- **Banco de Dados**: MySQL
+- **Segurança e Autenticação**: CodeIgniter Shield
+- **Frontend**: HTML5, CSS3 Customizado, JavaScript puro (Vanilla JS)
 
-## Installation & updates
+## ⚙️ Pré-requisitos
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+Certifique-se de que o seu ambiente de desenvolvimento atende aos seguintes requisitos:
+- **PHP 8.1** ou superior (com as extensões `intl`, `mbstring`, `json`, `mysqlnd` e `libcurl` habilitadas).
+- **Composer** (Gerenciador de dependências do PHP).
+- **Servidor Web** (XAMPP, Apache, Nginx) ou suporte ao CLI embutido do PHP (`php spark serve`).
+- **Banco de Dados** MySQL/MariaDB.
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+## 📦 Instalação e Configuração
 
-## Setup
+1. **Clonar o Repositório**:
+   ```bash
+   git clone <caminho-ou-url-do-repositorio>
+   cd site
+   ```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+2. **Instalar Dependências**:
+   ```bash
+   composer install
+   ```
 
-## Important Change with index.php
+3. **Configuração as Variáveis de Ambiente**:
+   - Copie o arquivo de exemplo `env` para gerar o `.env`:
+     ```bash
+     cp env .env
+     ```
+   - Abra o `.env` gerado e edite as informações da aplicação e do banco de dados (remover a `#` do início da linha para ativá-las):
+     ```env
+     CI_ENVIRONMENT = development
+     app.baseURL = 'http://localhost/site'
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+     database.default.hostname = localhost
+     database.default.database = site
+     database.default.username = seu_usuario
+     database.default.password = sua_senha
+     database.default.DBDriver = MySQLi
+     ```
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+4. **Rodar as Migrations**:
+   Caso existam alterações no banco de dados, rode o script de migrations via linha de comando para subir e atualizar as tabelas do projeto:
+   ```bash
+   php spark migrate
+   ```
 
-**Please** read the user guide for a better explanation of how CI4 works!
+5. **Iniciando o Servidor (Opcional)**:
+   Se não estiver rodando sob um Apache local tipo XAMPP e desejar rodar usando o Spark:
+   ```bash
+   php spark serve
+   ```
+   O projeto estará disponível por padrão em `http://localhost:8080/`.
 
-## Repository Management
+## 📂 Estrutura do Projeto
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+- `app/Controllers`: Camada Controller (Controladores públicos e da pasta `admin/`).
+- `app/Config`: Diretório de constantes, rotas e demais configurações do CI4.
+- `app/Models` & `app/Repositories`: Camadas responsáveis pelas models (ex: `CrmContactModel`, `ProcessosModel`) e Repositórios para gerenciamento das consultas de banco de dados.
+- `public/`: Diretório acessível web, abrigando o `index.php`, requisições CSS, JS, e envios de upload de imagens.
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+## 📄 Licença
 
-## Server Requirements
-
-PHP version 8.1 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+Este projeto está registrado sob a licença MIT - consulte o arquivo `LICENSE` no repositório para mais detalhes.

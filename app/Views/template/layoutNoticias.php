@@ -17,6 +17,7 @@
     <?= $this->renderSection('modals') ?>
     <script src="<?= base_url('public/dist/js/main.js') ?>"></script>
     <?= $this->renderSection('scripts') ?>
+
 </body>
 
 </html>

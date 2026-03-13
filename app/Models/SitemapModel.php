@@ -4,25 +4,19 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class NewsModel extends Model
+class SitemapModel extends Model
 {
-    protected $table            = 'news';
+    protected $table            = 'sitemap';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
+    protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'category_id',
-        'author_id',
-        'title',
-        'slug',
-        'summary',
-        'content',
-        'meta_title',
-        'meta_description',
-        'status',
-        'published_at'
+        'url',
+        'last_modified',
+        'priority',
+        'changefreq',
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -32,24 +26,14 @@ class NewsModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [
-        'category_id'      => 'required|integer',
-        'author_id'        => 'required|integer',
-        'title'            => 'required|max_length[255]',
-        'slug'             => 'required|max_length[255]|is_unique[news.slug,id,{id}]',
-        'content'          => 'required',
-        'meta_title'       => 'max_length[255]',
-        'meta_description' => 'max_length[160]',
-        'status'           => 'in_list[draft,published]',
-        'published_at'     => 'valid_date[Y-m-d H:i:s]'
-    ];
+    protected $validationRules      = [];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -64,4 +48,14 @@ class NewsModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function truncate(): mixed
+    {
+        try {
+            return $this->builder()->truncate();
+        } catch (\Exception $e) {
+
+            return $e->getMessage();
+        }
+    }
 }
