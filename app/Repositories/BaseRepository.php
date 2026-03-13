@@ -45,7 +45,7 @@ abstract class BaseRepository
 
     /**
      * Busca registros com suporte a Join, Filtros e Ordenação.
-     * * @param string|array $select
+     * @param string|array $select
      * @param array $where
      * @param string|null $orderBy
      * @param string|null $direction
@@ -53,11 +53,11 @@ abstract class BaseRepository
      * @return array|object|null
      */
     public function findAll(
-        string|array $select = '*',
-        array $where = [],
-        ?string $orderBy = null,
-        ?string $direction = null,
-        array $joins = []
+        string|array $select    = '*',
+        array $where            = [],
+        ?string $orderBy        = null,
+        ?string $direction      = null,
+        array $joins            = []
     ): mixed {
         $params = [$select, $where, $orderBy, $direction, $joins];
         $cacheName = $this->generateKey('all', $params);
