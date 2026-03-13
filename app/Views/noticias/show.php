@@ -41,8 +41,9 @@
                 </a>
             </div>
             <div class="article-tags">
-                <span class="badge bg-light text-dark fw-light">#AdvocaciaColaborativa</span>
-                <span class="badge bg-light text-dark fw-light">#DireitoDeFamilia</span>
+                <?php if (!empty($news['category_name'])): ?>
+                    <span class="badge bg-light text-dark fw-light">#<?= esc($news['category_name']) ?></span>
+                <?php endif; ?>
             </div>
         </div>
     </footer>
