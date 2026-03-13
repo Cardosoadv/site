@@ -14,7 +14,15 @@ class NewsService extends BaseService
 
     public function getBySlug(string $slug): mixed
     {
-        $result = $this->repository->findAll('*', ['slug' => $slug]);
+        $result = $this->repository->findAll(
+            'news.*, news_categories.name as category_name',
+            ['news.slug' => $slug],
+            null,
+            null,
+            [
+                ['news_categories', 'news.category_id = news_categories.id', 'left']
+            ]
+        );
         return !empty($result) ? $result[0] : null;
     }
 
