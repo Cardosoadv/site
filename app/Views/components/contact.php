@@ -30,18 +30,22 @@
         </div>
 
         <?php if (session()->getFlashdata('success')): ?>
-            <div class="alert alert-success" style="padding: 1rem; background-color: #d4edda; color: #155724; border-radius: 4px; margin-bottom: 2rem;">
-                <?= session()->getFlashdata('success') ?>
-            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    lancarToast('sucesso', <?= json_encode(session()->getFlashdata('success')) ?>);
+                });
+            </script>
         <?php endif; ?>
         <?php if (session()->getFlashdata('errors')): ?>
-            <div class="alert alert-danger" style="padding: 1rem; background-color: #f8d7da; color: #721c24; border-radius: 4px; margin-bottom: 2rem;">
-                <ul style="margin: 0; padding-left: 20px;">
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    let errorMsgs = "";
                     <?php foreach (session()->getFlashdata('errors') as $error): ?>
-                        <li><?= esc($error) ?></li>
+                        errorMsgs += <?= json_encode($error) ?> + "<br>";
                     <?php endforeach; ?>
-                </ul>
-            </div>
+                    lancarToast('erro', errorMsgs);
+                });
+            </script>
         <?php endif; ?>
 
         <form class="contact-form" action="<?= base_url('contact') ?>" method="POST">

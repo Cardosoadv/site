@@ -3,9 +3,17 @@
 namespace App\Controllers\admin;
 
 use App\Controllers\BaseController;
+use App\Services\NewsService;
 
 class Noticias extends BaseController
 {
+
+    private $service;
+
+    public function __construct()
+    {
+        $this->service = new NewsService();
+    }
     public function index(): string
     {
         return view('admin/noticias/index');
@@ -18,26 +26,49 @@ class Noticias extends BaseController
 
     public function create(): string
     {
-        return view('admin/noticias/create');
+        $data['title'] = 'Criar Notícia';
+        $data['categories'] = $this->service->getCategories();
+        return view('noticias/form', $data);
     }
 
     public function edit($slug): string
     {
-        return view('admin/noticias/edit');
+        $data['title'] = 'Editar Notícia';
+        $data['news'] = $this->service->getBySlug($slug);
+        return view('admin/noticias/form');
     }
 
-    public function store(): string
+    public function store()
     {
-        return view('admin/noticias/store');
+        $data = $this->request->getPost();
+
+        try {
+            $this->service->createNews($data);
+            return redirect()->to(base_url('admin/noticias'))->with('success', 'Notícia criada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
-    public function update($slug): string
+    public function update($id)
     {
-        return view('admin/noticias/update');
+        $data = $this->request->getPost();
+
+        try {
+            $this->service->updateNews($id, $data);
+            return redirect()->to(base_url('admin/noticias'))->with('success', 'Notícia atualizada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
-    public function destroy($slug): string
+    public function destroy($id)
     {
-        return view('admin/noticias/destroy');
+        try {
+            $this->service->deleteNews($id);
+            return redirect()->to(base_url('admin/noticias'))->with('success', 'Notícia excluída com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 }
