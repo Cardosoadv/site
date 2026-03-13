@@ -52,7 +52,7 @@ class SitemapModel extends Model
     public function truncate(): mixed
     {
         try {
-            return ($this->truncate());
+            return $this->builder()->truncate();
         } catch (\Exception $e) {
 
             return $e->getMessage();

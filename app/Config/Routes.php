@@ -13,6 +13,9 @@ $routes->get('/noticias/(:segment)', 'Noticias::show/$1');
 
 $routes->post('/contact', 'Home::receiveContact');
 
+//Sitemap
+$routes->get('sitemap.xml', 'Sitemap::index');
+$routes->get('sitemap/generate', 'Sitemap::generate');
 
 service('auth')->routes($routes);
 

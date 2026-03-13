@@ -18,7 +18,7 @@ class SitemapService extends BaseService
 
     public function getSitemapLinks(): array
     {
-        return $this->repository->findAll();
+        return $this->repository->findAll(['url', 'last_modified', 'priority', 'changefreq']);
     }
 
     public function truncateSitemap(): mixed

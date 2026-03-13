@@ -6,17 +6,23 @@ use App\Services\SitemapService;
 
 class Sitemap extends BaseController
 {
-    protected SitemapService $sitemapService;
+    protected SitemapService $service;
 
     public function __construct()
     {
-        $this->sitemapService = new SitemapService();
+        $this->service = new SitemapService();
     }
 
     public function index()
     {
-        $this->sitemapService->generateSitemap();
-        $sitemap = $this->sitemapService->getSitemapLinks();
+        
+        $sitemap = $this->service->getSitemapLinks();
         return view('sitemap', ['sitemap' => $sitemap]);
+    }
+
+    public function generate()
+    {
+        $this->service->generateSitemap();
+        return redirect()->back()->with('success', 'Sitemap gerado com sucesso!');
     }
 }
