@@ -15,7 +15,7 @@
         <h1 class="article-title"><?= esc($news['title']) ?></h1>
         
         <div class="article-meta">
-            <span><i class="bi bi-calendar3"></i> <?= date('d \de F \de Y', strtotime($news['published_at'])) ?></span>
+            <span><i class="bi bi-calendar3"></i> <?= date('d/m/Y', strtotime($news['published_at'])) ?></span>
         </div>
     </header>
 
@@ -27,8 +27,18 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div class="article-share">
                 <span class="news-date me-3">Compartilhar:</span>
-                <a href="#" class="btn btn-outline-dark btn-sm rounded-0"><i class="bi bi-linkedin"></i></a>
-                <a href="#" class="btn btn-outline-dark btn-sm rounded-0"><i class="bi bi-whatsapp"></i></a>
+                <?php 
+                    $shareUrl = current_url();
+                    $shareTitle = esc($news['title']);
+                ?>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?= rawurlencode($shareUrl) ?>" 
+                   target="_blank" rel="noopener" class="btn btn-outline-dark btn-sm rounded-0" title="Compartilhar no LinkedIn">
+                    <i class="bi bi-linkedin"></i>
+                </a>
+                <a href="https://api.whatsapp.com/send?text=<?= rawurlencode($shareTitle . ' ' . $shareUrl) ?>" 
+                   target="_blank" rel="noopener" class="btn btn-outline-dark btn-sm rounded-0" title="Compartilhar no WhatsApp">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
             </div>
             <div class="article-tags">
                 <span class="badge bg-light text-dark fw-light">#AdvocaciaColaborativa</span>
@@ -47,7 +57,7 @@
             <div class="col-md-4">
                 <div class="news-card">
                     <div class="news-card-content">
-                        <span class="news-date"><?= date('d M Y', strtotime($rel['published_at'])) ?></span>
+                        <span class="news-date"><?= date('d/m/Y', strtotime($rel['published_at'])) ?></span>
                         <h5 class="news-card-title" style="font-size: 1.1rem;"><?= esc($rel['title']) ?></h5>
                         <a href="<?= base_url('noticias/' . $rel['slug']) ?>" class="card-tag">Ler artigo</a>
                     </div>
