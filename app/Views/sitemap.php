@@ -3,7 +3,7 @@
     <?php foreach ($sitemap as $url): ?>
     <url>
         <loc><?= esc($url['url']) ?></loc>
-        <lastmod><?= $url['last_modified'] ?></lastmod>
+        <lastmod><?= date('Y-m-d', strtotime($url['last_modified'])) ?></lastmod>
         <changefreq><?= $url['changefreq'] ?></changefreq>
         <priority><?= $url['priority'] ?></priority>
     </url>
