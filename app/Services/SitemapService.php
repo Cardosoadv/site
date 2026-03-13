@@ -4,21 +4,32 @@ namespace App\Services;
 
 use App\Repositories\SitemapRepository;
 use App\Services\NewsService;
+use CodeIgniter\Cache\CacheInterface;
 
 class SitemapService extends BaseService
 {
 
     protected NewsService $newsService;
+
+    protected CacheInterface $cron; //Usando o cache para registrar tempo
     public function __construct()
     {
         $this->repository = new SitemapRepository();
         $this->newsService = new NewsService();
+        $this->cron = service('cache');
         parent::__construct($this->repository);
     }
 
     public function getSitemapLinks(): array
     {
-        return $this->repository->findAll(['url', 'last_modified', 'priority', 'changefreq']);
+        $sitemap = $this->cron->get('sitemap');
+        if ($sitemap !== null) {
+            return $sitemap;
+        }
+        $this->generateSitemap();
+        $sitemap = $this->repository->findAll(['url', 'last_modified', 'priority', 'changefreq']);
+        $this->cron->save('sitemap', $sitemap, 24*60*60);
+        return $sitemap;
     }
 
     public function truncateSitemap(): mixed
@@ -50,7 +61,7 @@ class SitemapService extends BaseService
         $this->addLink(base_url().'#contato', date('Y-m-d'), '0.8', 'monthly');
 
         //Adiciona Links Notícias
-        $noticias = $this->newsService->findAll(['slug', 'updated_at'],['status' => 'published'], 'updated_at', 'desc');
+        $noticias = $this->newsService->getAll(['slug', 'updated_at'],['status' => 'published'], 'updated_at', 'desc');
         foreach ($noticias as $noticia) {
             $this->addLink(base_url().'noticias/'.$noticia['slug'], $noticia['updated_at'], '0.8', 'monthly');
         }

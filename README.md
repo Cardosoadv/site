@@ -8,6 +8,12 @@ Este projeto é um site desenvolvido com o framework [CodeIgniter 4](https://cod
   - Página Inicial (`Home`).
   - Listagem e leitura de Notícias publicadas.
   - Formulário de Contato integrado com o banco de dados.
+- **Sitemap**:
+  - Geração dinâmica de links indexáveis (`/sitemap.xml`).
+  - Sistema de cache persistente para otimização de performance.
+  - Atualização automática baseada em notícias publicadas.
+- **Relatório de Evolução**:
+  - Registro detalhado de melhorias e correções em [.antigravity/report.md].
 - **Painel Administrativo (`/admin`)**:
   - Acesso restrito para usuários autenticados (utilizando CodeIgniter Shield).
   - Gerenciamento completo de Notícias (Criar, Editar, Excluir).
