@@ -16,7 +16,16 @@ class Noticias extends BaseController
     }
     public function index(): string
     {
-        return view('admin/noticias/index');
+        $data['title'] = 'Gerenciar Notícias';
+        $data['news'] = $this->service->getAll(
+            'news.*, news_categories.name as category_name',
+            [],
+            'id',
+            'desc',
+            [['news_categories', 'news.category_id = news_categories.id', 'left']]
+        );
+
+        return view('admin/noticias/index', $data);
     }
 
     public function show($slug): string
