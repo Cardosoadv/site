@@ -1,6 +1,6 @@
     <!-- HERO -->
-    <section class="hero">
-        <div class="hero-left">
+    <section class="hero row">
+        <div class="hero-left col">
             <div class="hero-badge">Fundado em 2018 — Belo Horizonte, MG</div>
             <h1 class="hero-title">
                 Precisão jurídica.<br>
@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="hero-right">
+        <div class="hero-right col">
             <div class="hero-img-container"></div>
             <div class="hero-overlay-text">§</div>
             <div class="hero-stats">

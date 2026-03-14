@@ -13,6 +13,6 @@
         
         <ul class="footer-links">
             <li><a href="#">Política de Privacidade</a></li>
-            <li><a href="#">Área Administrativa</a></li>
+            <li><a href="<?= base_url('admin') ?>">Área Administrativa</a></li>
         </ul>
     </footer>

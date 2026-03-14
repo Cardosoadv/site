@@ -821,6 +821,7 @@ footer {
   margin-bottom: 1rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1096,4 +1097,147 @@ footer {
   border-color: rgba(13, 27, 42, 0.1);
   pointer-events: none;
   cursor: default;
+}
+
+/* =========================================
+   RESPONSIVIDADE (Mobile & Tablet)
+   ========================================= */
+@media (max-width: 991px) {
+  /* Navbar */
+  .nav-links {
+    display: none; /* Esconder links no desktop no mobile (pode precisar de menu toggle depois) */
+  }
+
+  /* Hero */
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .hero-left {
+    padding: 8rem 5vw 4rem 5vw;
+    text-align: center;
+  }
+  .hero-badge {
+    justify-content: center;
+  }
+  .hero-badge::before {
+    display: none;
+  }
+  .hero-divider {
+    margin: 2.5rem auto;
+  }
+  .hero-sub {
+    margin: 0 auto;
+  }
+  .hero-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .hero-right {
+    min-height: 50vh;
+  }
+  .hero-stats {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .stat {
+    flex: 1 1 50%;
+  }
+
+  /* Common elements */
+  .section-eyebrow {
+    justify-content: center;
+  }
+  .section-eyebrow::before {
+    display: none;
+  }
+  .section-title {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /* Expertise */
+  .expertise {
+    padding: 4rem 5vw;
+  }
+  .expertise-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Pillars */
+  .pillars {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 4rem 5vw;
+    text-align: center;
+  }
+  .pillars-text p {
+    margin: 2rem auto 0;
+  }
+  .pillar-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Highlights */
+  .highlight-split {
+    grid-template-columns: 1fr;
+  }
+  .highlight-panel {
+    padding: 4rem 5vw;
+  }
+  .highlight-panel.light ul {
+    align-items: center;
+    text-align: left; /* Keep bullets readable but centered block */
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Contact */
+  .contact {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 4rem 5vw;
+  }
+  .contact-info {
+    text-align: center;
+  }
+  .contact-detail {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer */
+  footer {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-title {
+    font-size: 2.8rem;
+  }
+  .hero-overlay-text {
+    font-size: 5rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+  .stat {
+    flex: 1 1 100%;
+  }
+  .news-grid {
+    grid-template-columns: 1fr;
+  }
 }
