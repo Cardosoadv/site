@@ -16,7 +16,9 @@ Este projeto é um site desenvolvido com o framework [CodeIgniter 4](https://cod
   - Registro detalhado de melhorias e correções em [.antigravity/report.md].
 - **Painel Administrativo (`/admin`)**:
   - Acesso restrito para usuários autenticados (utilizando CodeIgniter Shield).
+  - Dashboard centralizado atuando como hub principal do painel.
   - Gerenciamento completo de Notícias (Criar, Editar, Excluir).
+  - Gestão de Contatos / CRM (Visualização de Leads, Mensagens Completas, Status de Conversão).
   - Interface moderna com suporte a um tema escuro (Dark Theme), editor Rich Text para o conteúdo das notícias e upload de imagens.
   - Sistema de alertas e notificações via Toast (JavaScript).
 

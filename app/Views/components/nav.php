@@ -24,7 +24,7 @@
                     <li class="nav-item"><a class="nav-link p-0" href="<?= base_url('noticias') ?>">Notícias</a></li>
                 </ul>
                 <div class="d-flex justify-content-center justify-content-lg-start">
-                    <button class="nav-cta border-0">Consulta Inicial</button>
+                    <button class="nav-cta border-0" onclick="window.location.href='<?= base_url() ?>#contato'">Consulta Inicial</button>
                 </div>
             </div>
         </div>
