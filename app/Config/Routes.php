@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
+$routes->get('pagina/(:segment)', 'Pagina::index/$1');
 
 $routes->get('/noticias', 'Noticias::index');
 $routes->get('/noticias/(:segment)', 'Noticias::show/$1');
