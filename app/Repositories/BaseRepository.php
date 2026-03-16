@@ -44,6 +44,18 @@ abstract class BaseRepository
     }
 
     /**
+     * Inserção em lote com limpeza automática de cache.
+     */
+    public function createBatch(array $data): int|false
+    {
+        $result = $this->model->insertBatch($data);
+        if ($result) {
+            $this->clearCache();
+        }
+        return $result;
+    }
+
+    /**
      * Busca registros com suporte a Join, Filtros e Ordenação.
      * @param string|array $select
      * @param array $where
