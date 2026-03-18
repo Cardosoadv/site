@@ -55,7 +55,7 @@ class CrmContactRepository extends BaseRepository
      */
     public function getAreaById(int $id)
     {
-        return $this->crmAreaModel->findById($id);
+        return $this->crmAreaModel->find($id);
     }
 
     /**
@@ -65,7 +65,7 @@ class CrmContactRepository extends BaseRepository
      */
     public function createArea(array $data)
     {
-        return $this->crmAreaModel->create($data);
+        return $this->crmAreaModel->insert($data);
     }
 
     /**
