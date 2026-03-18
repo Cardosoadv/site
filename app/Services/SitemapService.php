@@ -53,17 +53,54 @@ class SitemapService extends BaseService
         //Limpa a tabela
         $this->truncateSitemap();
 
+        $links = [];
+        $currentDate = date('Y-m-d');
+
         //Adiciona Links página Inicial
-        $this->addLink(base_url(), date('Y-m-d'), '1', 'daily');
-        $this->addLink(base_url().'#expertise', date('Y-m-d'), '0.8', 'monthly');
-        $this->addLink(base_url().'#civil', date('Y-m-d'), '0.8', 'monthly');
-        $this->addLink(base_url().'#administrativo', date('Y-m-d'), '0.8', 'monthly');
-        $this->addLink(base_url().'#contato', date('Y-m-d'), '0.8', 'monthly');
+        $links[] = [
+            'url'           => base_url(),
+            'last_modified' => $currentDate,
+            'priority'      => '1',
+            'changefreq'    => 'daily',
+        ];
+        $links[] = [
+            'url'           => base_url().'#expertise',
+            'last_modified' => $currentDate,
+            'priority'      => '0.8',
+            'changefreq'    => 'monthly',
+        ];
+        $links[] = [
+            'url'           => base_url().'#civil',
+            'last_modified' => $currentDate,
+            'priority'      => '0.8',
+            'changefreq'    => 'monthly',
+        ];
+        $links[] = [
+            'url'           => base_url().'#administrativo',
+            'last_modified' => $currentDate,
+            'priority'      => '0.8',
+            'changefreq'    => 'monthly',
+        ];
+        $links[] = [
+            'url'           => base_url().'#contato',
+            'last_modified' => $currentDate,
+            'priority'      => '0.8',
+            'changefreq'    => 'monthly',
+        ];
 
         //Adiciona Links Notícias
         $noticias = $this->newsService->getAll(['slug', 'updated_at'],['status' => 'published'], 'updated_at', 'desc');
         foreach ($noticias as $noticia) {
-            $this->addLink(base_url().'noticias/'.$noticia['slug'], $noticia['updated_at'], '0.8', 'monthly');
+            $links[] = [
+                'url'           => base_url().'noticias/'.$noticia['slug'],
+                'last_modified' => $noticia['updated_at'],
+                'priority'      => '0.8',
+                'changefreq'    => 'monthly',
+            ];
+        }
+
+        if (!empty($links)) {
+            $this->repository->createBatch($links);
         }
     }
 }
