@@ -8,11 +8,11 @@ use App\Services\NewsService;
 class Noticias extends BaseController
 {
 
-    private $service;
+    protected $service;
 
     public function __construct()
     {
-        $this->service = new NewsService();
+        $this->service = service('news');
     }
     public function index(): string
     {
