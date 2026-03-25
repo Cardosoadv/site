@@ -2,13 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Models\NewsCategoryModel;
 use App\Models\NewsModel;
 
 class NewsRepository extends BaseRepository
 {
 
-    private $newsCategoryModel;
+    private NewsCategoryRepository $newsCategoryRepository;
 
     public function __construct(NewsModel $model)
     {
@@ -16,7 +15,7 @@ class NewsRepository extends BaseRepository
         $this->cacheKey = 'news';
         $this->cacheTime = 60 * 60 * 24 * 7;
         $this->cacheEnabled = true;
-        $this->newsCategoryModel = new NewsCategoryModel();
+        $this->newsCategoryRepository = new NewsCategoryRepository();
     }
 
     public function getNewsByCategory(int $categoryId, int $limit = 10)
@@ -41,25 +40,23 @@ class NewsRepository extends BaseRepository
 
     public function getCategories()
     {
-        return $this->newsCategoryModel->findAll();
+        return $this->newsCategoryRepository->getAll();
     }
 
     public function getCategoryById(int $id)
     {
-        return $this->newsCategoryModel->find($id);
+        return $this->newsCategoryRepository->findById($id);
     }
 
     public function getCategoryByName(string $name)
     {
-        return $this->newsCategoryModel->where('name', $name)->first();
+        return $this->newsCategoryRepository->getByName($name);
     }
 
     public function getCategoryBySlug(string $slug)
     {
-        return $this->newsCategoryModel->where('slug', $slug)->first();
+        return $this->newsCategoryRepository->getBySlug($slug);
     }
-
-
 
 
 }
