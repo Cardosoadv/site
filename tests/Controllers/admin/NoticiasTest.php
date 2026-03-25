@@ -17,9 +17,6 @@ final class NoticiasTest extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Bypass CSRF and session filters during testing
-        $this->withFilters([]);
     }
 
     public function testUpdateErrorRedirectsBack(): void
@@ -34,8 +31,11 @@ final class NoticiasTest extends CIUnitTestCase
 
         // Perform the request
         $response = $this->post('admin/noticias/update/1', [
-            'title' => 'Updated Title',
-            'content' => 'Updated Content'
+            'title'            => 'Updated Title',
+            'category_id'      => 1,
+            'status'           => 'published',
+            'summary'          => 'Updated Summary',
+            'content'          => 'Updated Content'
         ]);
 
         // Assertions
