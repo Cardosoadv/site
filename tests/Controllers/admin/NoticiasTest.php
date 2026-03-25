@@ -41,9 +41,6 @@ final class NoticiasTest extends CIUnitTestCase
         // Assertions
         $response->assertRedirect();
         $response->assertSessionHas('error', 'Erro ao atualizar a notícia.');
-
-        // Check if it has old input (withInput())
-        // In CI4 FeatureTest, we can check the session for '_ci_old_input'
         $this->assertTrue(session()->has('_ci_old_input'));
     }
 }
