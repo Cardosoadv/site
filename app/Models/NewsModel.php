@@ -44,6 +44,7 @@ class NewsModel extends Model
         'author_id'        => 'required|integer',
         'title'            => 'required|max_length[255]',
         'slug'             => 'required|max_length[255]|is_unique[news.slug,id,{id}]',
+        'summary'          => 'required|max_length[500]',
         'content'          => 'required',
         'meta_title'       => 'max_length[255]',
         'meta_description' => 'max_length[160]',
