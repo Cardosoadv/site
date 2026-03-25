@@ -9,9 +9,14 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 style="color: var(--gold, #d4af37);">Gerenciar Notícias</h2>
-        <a href="<?= base_url('admin/noticias/create') ?>" class="btn btn-primary" style="background-color: var(--gold, #d4af37); border: none;">
-            <i class="bi bi-plus-lg"></i> Nova Notícia
-        </a>
+        <div>
+            <a href="<?= base_url('admin/') ?>" class="btn btn-outline-light me-2">
+                <i class="bi bi-arrow-left"></i> Voltar
+            </a>
+            <a href="<?= base_url('admin/noticias/create') ?>" class="btn btn-primary" style="background-color: var(--gold, #d4af37); border: none;">
+                <i class="bi bi-plus-lg"></i> Nova Notícia
+            </a>
+        </div>
     </div>
 
     <?php if (session()->getFlashdata('success')): ?>

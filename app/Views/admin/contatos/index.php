@@ -9,6 +9,9 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 style="color: var(--gold, #d4af37);">Gerenciar Contatos</h2>
+        <a href="<?= base_url('admin/') ?>" class="btn btn-outline-light">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
     </div>
 
     <?php if (session()->getFlashdata('success')): ?>
