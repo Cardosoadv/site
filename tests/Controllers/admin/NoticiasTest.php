@@ -17,9 +17,6 @@ final class NoticiasTest extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Bypass CSRF and session filters during testing
-        $this->withFilters([]);
     }
 
     public function testUpdateErrorRedirectsBack(): void
@@ -32,18 +29,26 @@ final class NoticiasTest extends CIUnitTestCase
         // Register the mock in Services
         Services::injectMock('news', $newsServiceMock);
 
+        // Define withFilters as it was likely a custom method or from a previous CI version
+        // Actually, we can just use $this->withRoutes to define a route without filters
+        $this->withRoutes([
+            ['POST', 'admin/noticias/update/1', 'admin\Noticias::update/1']
+        ]);
+
         // Perform the request
-        $response = $this->post('admin/noticias/update/1', [
+        $response = $this->withSession([])
+            ->post('admin/noticias/update/1', [
             'title' => 'Updated Title',
-            'content' => 'Updated Content'
+            'category_id' => '1',
+            'status' => 'published',
+            'summary' => 'Updated Summary',
+            'content' => 'Updated Content',
+            csrf_token() => csrf_hash()
         ]);
 
         // Assertions
         $response->assertRedirect();
         $response->assertSessionHas('error', 'Erro ao atualizar a notícia.');
-
-        // Check if it has old input (withInput())
-        // In CI4 FeatureTest, we can check the session for '_ci_old_input'
         $this->assertTrue(session()->has('_ci_old_input'));
     }
 }
