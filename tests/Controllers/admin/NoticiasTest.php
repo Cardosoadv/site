@@ -29,21 +29,26 @@ final class NoticiasTest extends CIUnitTestCase
         // Register the mock in Services
         Services::injectMock('news', $newsServiceMock);
 
-        // Define withFilters as it was likely a custom method or from a previous CI version
-        // Actually, we can just use $this->withRoutes to define a route without filters
-        $this->withRoutes([
-            ['POST', 'admin/noticias/update/1', 'admin\Noticias::update/1']
-        ]);
+        // Mock security to skip CSRF
+        $securityMock = $this->getMockBuilder('CodeIgniter\Security\Security')
+            ->setConstructorArgs([config('Security')])
+            ->onlyMethods(['verify'])
+            ->getMock();
+        $securityMock->method('verify')->willReturn($securityMock);
+        Services::injectMock('security', $securityMock);
 
-        // Perform the request
-        $response = $this->withSession([])
-            ->post('admin/noticias/update/1', [
-            'title' => 'Updated Title',
-            'category_id' => '1',
-            'status' => 'published',
-            'summary' => 'Updated Summary',
-            'content' => 'Updated Content',
-            csrf_token() => csrf_hash()
+        // Perform the request with full data to pass validation
+        $response = $this->withRoutes([
+            ['POST', 'admin/noticias/update/(.*)', 'admin\Noticias::update/$1']
+        ])->post('admin/noticias/update/1', [
+            'title'            => 'Updated Title',
+            'category_id'      => 1,
+            'status'           => 'published',
+            'summary'          => 'Updated Summary',
+            'content'          => 'Updated Content',
+            'meta_title'       => 'Updated Meta Title',
+            'meta_description' => 'Updated Meta Description',
+            'published_at'     => '2023-10-27T10:00'
         ]);
 
         // Assertions
