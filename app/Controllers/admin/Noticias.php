@@ -12,7 +12,7 @@ class Noticias extends BaseController
 
     public function __construct()
     {
-        $this->service = new NewsService();
+        $this->service = service('news');
     }
     public function index(): string
     {
@@ -51,6 +51,21 @@ class Noticias extends BaseController
     {
         $data = $this->request->getPost();
 
+        $rules = [
+            'title'            => 'required|max_length[255]',
+            'category_id'      => 'required|integer',
+            'status'           => 'required|in_list[draft,published]',
+            'summary'          => 'required|max_length[500]',
+            'content'          => 'required',
+            'meta_title'       => 'permit_empty|max_length[255]',
+            'meta_description' => 'permit_empty|max_length[160]',
+            'published_at'     => 'permit_empty|valid_date[Y-m-d\TH:i]'
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         try {
             $this->service->createNews($data);
             return redirect()->to(base_url('admin/noticias'))->with('success', 'Notícia criada com sucesso!');
@@ -62,6 +77,21 @@ class Noticias extends BaseController
     public function update($id)
     {
         $data = $this->request->getPost();
+
+        $rules = [
+            'title'            => 'required|max_length[255]',
+            'category_id'      => 'required|integer',
+            'status'           => 'required|in_list[draft,published]',
+            'summary'          => 'required|max_length[500]',
+            'content'          => 'required',
+            'meta_title'       => 'permit_empty|max_length[255]',
+            'meta_description' => 'permit_empty|max_length[160]',
+            'published_at'     => 'permit_empty|valid_date[Y-m-d\TH:i]'
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
 
         try {
             $this->service->updateNews($id, $data);

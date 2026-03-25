@@ -10,7 +10,7 @@ class Sitemap extends BaseController
 
     public function __construct()
     {
-        $this->service = new SitemapService();
+        $this->service = service('sitemap');
     }
 
     public function index()
