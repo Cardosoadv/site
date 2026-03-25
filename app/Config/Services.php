@@ -19,6 +19,15 @@ use CodeIgniter\Config\BaseService;
  */
 class Services extends BaseService
 {
+    public static function news($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('news');
+        }
+
+        return new \App\Services\NewsService();
+    }
+
     /*
      * public static function example($getShared = true)
      * {
