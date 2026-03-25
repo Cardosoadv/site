@@ -12,7 +12,7 @@ class Noticias extends BaseController
 
     public function __construct()
     {
-        $this->service = new NewsService();
+        $this->service = service('news');
     }
     public function index(): string
     {
