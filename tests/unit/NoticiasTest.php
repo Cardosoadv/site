@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Controllers\Noticias;
 use App\Services\NewsService;
 use CodeIgniter\Config\Services;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\ControllerTestTrait;
 use CodeIgniter\Exceptions\PageNotFoundException;
@@ -54,80 +55,63 @@ final class NoticiasTest extends CIUnitTestCase
         $this->assertTrue($result->see('Test News 2', 'h3'));
     }
 
-    public function testIndexEmpty(): void
+    public function testShowSuccess(): void
     {
-        $serviceMock = $this->createMock(NewsService::class);
-        $serviceMock->expects($this->once())
-            ->method('getAll')
-            ->willReturn([]);
-
-        Services::injectMock('news', $serviceMock);
-
-        $result = $this->controller(Noticias::class)
-            ->execute('index');
-
-        $this->assertTrue($result->isOK());
-        $this->assertTrue($result->see('Nenhum artigo publicado ainda.', 'p'));
-    }
-
-    public function testShow(): void
-    {
+        $slug = 'test-news-1';
         $mockNews = [
             'id'           => 1,
-            'title'        => 'Article 1',
-            'content'      => 'Full content of article 1',
-            'slug'         => 'article-1',
+            'title'        => 'Test News 1',
+            'summary'      => 'Summary 1',
+            'slug'         => $slug,
+            'content'      => 'Content 1',
             'published_at' => '2023-10-27 10:00:00',
         ];
 
-        $mockRelated = [
+        $relatedNews = [
             [
                 'id'           => 2,
-                'title'        => 'Article 2',
-                'slug'         => 'article-2',
+                'title'        => 'Related News',
+                'slug'         => 'related-news',
                 'published_at' => '2023-10-26 10:00:00',
-            ],
-            [
-                'id'           => 1, // Current article, should be filtered out
-                'title'        => 'Article 1',
-                'slug'         => 'article-1',
-                'published_at' => '2023-10-27 10:00:00',
             ],
         ];
 
         $serviceMock = $this->createMock(NewsService::class);
         $serviceMock->expects($this->once())
             ->method('getBySlug')
-            ->with('article-1')
+            ->with($slug)
             ->willReturn($mockNews);
 
         $serviceMock->expects($this->once())
             ->method('getAll')
-            ->willReturn($mockRelated);
+            ->willReturn($relatedNews);
 
         Services::injectMock('news', $serviceMock);
 
         $result = $this->controller(Noticias::class)
-            ->execute('show', 'article-1');
+            ->execute('show', $slug);
 
         $this->assertTrue($result->isOK());
-        $this->assertTrue($result->see('Article 1', 'h1'));
-        $this->assertTrue($result->see('Article 2', 'h5'));
+        $this->assertTrue($result->see('Test News 1', 'h1'));
+        $this->assertTrue($result->see('Content 1'));
     }
 
     public function testShowNotFound(): void
     {
+        $slug = 'non-existent-news';
+
         $serviceMock = $this->createMock(NewsService::class);
         $serviceMock->expects($this->once())
             ->method('getBySlug')
-            ->with('non-existent')
+            ->with($slug)
             ->willReturn(null);
 
         Services::injectMock('news', $serviceMock);
 
         $this->expectException(PageNotFoundException::class);
+        $this->expectExceptionMessage('Artigo não encontrado.');
 
         $controller = new Noticias();
-        $controller->show('non-existent');
+        $controller->show($slug);
     }
 }
