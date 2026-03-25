@@ -41,7 +41,7 @@
 
             <div class="mb-4">
                 <label for="summary" class="form-label fw-bold">Resumo / Linha Fina (Summary)</label>
-                <textarea name="summary" id="summary" class="form-control" rows="3" required placeholder="Digite um breve resumo da notícia"></textarea>
+                <textarea name="summary" id="summary" class="form-control" rows="3" placeholder="Digite um breve resumo da notícia"></textarea>
             </div>
 
             <!-- Editor de Texto Rico (Rich Text) -->
