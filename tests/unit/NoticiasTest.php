@@ -8,7 +8,7 @@ use CodeIgniter\Config\Services;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\ControllerTestTrait;
-use CodeIgniter\Exceptions\PageNotFoundException;
+
 
 /**
  * @internal
