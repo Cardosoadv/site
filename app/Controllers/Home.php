@@ -2,18 +2,15 @@
 
 namespace App\Controllers;
 
-
 use App\Services\CrmContactService;
 
 class Home extends BaseController
-
 {
-
     protected $service;
 
     public function __construct()
     {
-        $this->service = New CrmContactService();
+        $this->service = service('crmContact');
     }
 
     public function index(): string

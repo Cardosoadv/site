@@ -28,6 +28,15 @@ class Services extends BaseService
         return new \App\Services\NewsService();
     }
 
+    public static function crmContact($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('crmContact');
+        }
+
+        return new \App\Services\CrmContactService();
+    }
+
     /*
      * public static function example($getShared = true)
      * {
@@ -38,13 +47,4 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
-
-    public static function news($getShared = true)
-    {
-        if ($getShared) {
-            return static::getSharedInstance('news');
-        }
-
-        return new \App\Services\NewsService();
-    }
 }
