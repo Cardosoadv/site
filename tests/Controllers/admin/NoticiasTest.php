@@ -17,9 +17,6 @@ final class NoticiasTest extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Bypass CSRF and session filters during testing
-        $this->withFilters([]);
     }
 
     public function testUpdateErrorRedirectsBack(): void
@@ -32,10 +29,26 @@ final class NoticiasTest extends CIUnitTestCase
         // Register the mock in Services
         Services::injectMock('news', $newsServiceMock);
 
-        // Perform the request
-        $response = $this->post('admin/noticias/update/1', [
-            'title' => 'Updated Title',
-            'content' => 'Updated Content'
+        // Mock security to skip CSRF
+        $securityMock = $this->getMockBuilder('CodeIgniter\Security\Security')
+            ->setConstructorArgs([config('Security')])
+            ->onlyMethods(['verify'])
+            ->getMock();
+        $securityMock->method('verify')->willReturn($securityMock);
+        Services::injectMock('security', $securityMock);
+
+        // Perform the request with full data to pass validation
+        $response = $this->withRoutes([
+            ['POST', 'admin/noticias/update/(.*)', 'admin\Noticias::update/$1']
+        ])->post('admin/noticias/update/1', [
+            'title'            => 'Updated Title',
+            'category_id'      => 1,
+            'status'           => 'published',
+            'summary'          => 'Updated Summary',
+            'content'          => 'Updated Content',
+            'meta_title'       => 'Updated Meta Title',
+            'meta_description' => 'Updated Meta Description',
+            'published_at'     => '2023-10-27T10:00'
         ]);
 
         // Assertions
