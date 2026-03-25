@@ -28,6 +28,15 @@ class Services extends BaseService
         return new \App\Services\NewsService();
     }
 
+    public static function sitemap($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('sitemap');
+        }
+
+        return new \App\Services\SitemapService();
+    }
+
     /*
      * public static function example($getShared = true)
      * {
