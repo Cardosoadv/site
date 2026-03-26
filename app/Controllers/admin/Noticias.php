@@ -8,7 +8,7 @@ use App\Services\NewsService;
 class Noticias extends BaseController
 {
 
-    private $service;
+    protected $service;
 
     public function __construct()
     {
