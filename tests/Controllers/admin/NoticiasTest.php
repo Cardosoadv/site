@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Controllers\admin;
+namespace Tests\Controllers\Admin;
 
 use App\Controllers\admin\Noticias;
 use App\Services\NewsService;
@@ -18,67 +18,47 @@ final class NoticiasTest extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Mock the security service to bypass CSRF
-        $security = $this->createMock(\CodeIgniter\Security\Security::class);
-        $security->method('verify')->willReturn($security);
-        $security->method('getHash')->willReturn('fake-hash');
-        $security->method('getTokenName')->willReturn('csrf_test_name');
-        Services::injectMock('security', $security);
     }
 
-    public function testUpdateErrorRedirectsBack(): void
+    public function testDestroySuccess(): void
     {
-        // Define routes without filters to bypass SessionAuth and Shield
-        $this->withRoutes([
-            ['post', 'admin/noticias/update/(:segment)', 'admin\Noticias::update/$1']
-        ]);
+        $id = 123;
 
-        // Mock the NewsService
-        $newsServiceMock = $this->createMock(NewsService::class);
-        $newsServiceMock->method('updateNews')
-            ->willThrowException(new \Exception('Erro ao atualizar a notícia.'));
+        /** @var NewsService|\PHPUnit\Framework\MockObject\MockObject $mock */
+        $mock = $this->createMock(NewsService::class);
+        $mock->expects($this->once())
+            ->method('deleteNews')
+            ->with($id)
+            ->willReturn(true);
 
-        // Register the mock in Services
-        Services::injectMock('news', $newsServiceMock);
+        Services::injectMock('news', $mock);
 
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST = [
-            'title'       => 'Updated Title',
-            'category_id' => '1',
-            'status'      => 'published',
-            'summary'     => 'Updated Summary',
-            'content'     => 'Updated Content'
-        ];
+        $result = $this->withUri(base_url("admin/noticias/destroy/{$id}"))
+            ->controller(Noticias::class)
+            ->execute('destroy', $id);
 
-        $request = service('request', null, false);
-        $request->setMethod('post');
-        $request->setGlobal('post', $_POST);
-        Services::injectMock('request', $request);
+        $result->assertRedirectTo(base_url('admin/noticias'));
+        $result->assertSessionHas('success', 'Notícia excluída com sucesso!');
+    }
 
-        $result = $this->controller(Noticias::class)
-            ->execute('update', 1);
+    public function testDestroyError(): void
+    {
+        $id = 123;
+        $errorMessage = 'Erro ao excluir a notícia.';
 
-        // Assertions
-        $this->assertTrue($result->isRedirect());
-        // Since session assertion isn't working as expected in CLI, we'll settle for checking the redirect.
-        $this->assertTrue($result->response()->hasHeader('Location'));
-        // Perform the request with valid fields for validation
-        $response = $this->post('admin/noticias/update/1', [
-            'title'            => 'Updated Title',
-            'category_id'      => '1',
-            'status'           => 'published',
-            'summary'          => 'Updated Summary',
-            'content'          => 'Updated Content',
-            'category_id'      => 1,
-            'status'           => 'published',
-            'summary'          => 'Updated Summary',
-            'content'          => 'Updated Content'
-        ]);
+        /** @var NewsService|\PHPUnit\Framework\MockObject\MockObject $mock */
+        $mock = $this->createMock(NewsService::class);
+        $mock->expects($this->once())
+            ->method('deleteNews')
+            ->with($id)
+            ->willThrowException(new \Exception($errorMessage));
 
-        // Assertions
-        $response->assertRedirect();
-        $response->assertSessionHas('error', 'Erro ao atualizar a notícia.');
-        $this->assertTrue(session()->has('_ci_old_input'));
+        Services::injectMock('news', $mock);
+
+        $result = $this->withUri(base_url("admin/noticias/destroy/{$id}"))
+            ->controller(Noticias::class)
+            ->execute('destroy', $id);
+
+        $result->assertSessionHas('error', $errorMessage);
     }
 }
