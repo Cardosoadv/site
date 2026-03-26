@@ -37,14 +37,12 @@ class Services extends BaseService
         return new \App\Services\CrmContactService();
     }
 
-    /*
-     * public static function example($getShared = true)
-     * {
-     *     if ($getShared) {
-     *         return static::getSharedInstance('example');
-     *     }
-     *
-     *     return new \CodeIgniter\Example();
-     * }
-     */
+    public static function sitemap($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('sitemap');
+        }
+
+        return new \App\Services\SitemapService();
+    }
 }
