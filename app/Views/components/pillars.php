@@ -3,7 +3,7 @@
         <div class="pillars-text">
             <div class="section-eyebrow">Por que Cardoso & Bruno</div>
             <h2 class="section-title reveal" style="color: var(--cream);">Uma advocacia construída sobre pilares sólidos</h2>
-            <p>Nascemos do Direito Público — procuradores do CRBIO — e crescemos com a confiança de clientes que exigem mais do que processos: exigem estratégia, transparência e resultados.</p>
+            <p>Nascemos do Direito Público — procuradores do CRBio — e crescemos com a confiança de clientes que exigem mais do que processos: exigem estratégia, transparência e resultados.</p>
         </div>
 
         <div class="pillars-list">
@@ -18,7 +18,7 @@
                 <div class="pillar-icon">🏛</div>
                 <div>
                     <div class="pillar-name">Experiência Institucional</div>
-                    <p class="pillar-desc">Fundado por ex-procuradores de Conselho Federal, com visão aprofundada das relações entre Estado e particular.</p>
+                    <p class="pillar-desc">Fundado por ex-procuradores de Conselho Profissional, com visão aprofundada das relações entre Estado e particular.</p>
                 </div>
             </div>
             <div class="pillar-item reveal">

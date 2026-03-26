@@ -3,12 +3,13 @@
     "description": "Site Institucional e Painel Administrativo",
     "license": "MIT",
     "type": "project",
-    "homepage": "https://codeigniter.com",
-    "support": {
-        "forum": "https://forum.codeigniter.com/",
-        "source": "https://github.com/codeigniter4/CodeIgniter4",
-        "slack": "https://codeigniterchat.slack.com"
-    },
+    "homepage": "https://cardosoebruno.adv.br",
+    "authors": [
+        {
+            "name": "Cognitio Tecnologia",
+            "homepage": "https://cognitiotecnologia.com.br"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "codeigniter4/framework": "^4.0",

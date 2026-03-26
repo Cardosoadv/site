@@ -1,5 +1,15 @@
 <?= $this->extend('template/layoutNoticias') ?>
 
+<?= $this->section('header') ?>
+    <title><?= esc($news['meta_title'] ?: $news['title']) ?> | Cardoso & Bruno</title>
+    <meta name="description" content="<?= esc($news['meta_description'] ?: $news['summary']) ?>">
+    <meta property="og:title" content="<?= esc($news['meta_title'] ?: $news['title']) ?>">
+    <meta property="og:description" content="<?= esc($news['summary']) ?>">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="<?= current_url() ?>">
+<?= $this->endSection()?>
+
+
 <?= $this->section('content') ?>
 
 <div class="news-hero" style="height: 400px; padding-top: 8rem;">
