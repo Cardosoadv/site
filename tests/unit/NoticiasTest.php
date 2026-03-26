@@ -62,7 +62,7 @@ final class NoticiasTest extends CIUnitTestCase
             'id'           => 1,
             'title'        => 'Test News 1',
             'summary'      => 'Summary 1',
-            'slug'         => $slug,
+            'slug'         => $slug, 'meta_title' => '', 'meta_description' => '',
             'content'      => 'Content 1',
             'published_at' => '2023-10-27 10:00:00',
         ];
