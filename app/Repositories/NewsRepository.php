@@ -11,7 +11,7 @@ class NewsRepository extends BaseRepository
 
     public function __construct(NewsModel $model)
     {
-        $this->model = $model;
+        parent::__construct($model);
         $this->cacheKey = 'news';
         $this->cacheTime = 60 * 60 * 24 * 7;
         $this->cacheEnabled = true;
@@ -58,5 +58,48 @@ class NewsRepository extends BaseRepository
         return $this->newsCategoryRepository->getBySlug($slug);
     }
 
+    /**
+     * Find a single news article by its slug.
+     */
+    public function findBySlug(string $slug, string|array $select = '*', array $joins = [])
+    {
+        return $this->first($select, ['slug' => $slug], $joins);
+    }
 
+    /**
+     * Get latest published news excluding a specific slug.
+     * Optimization: Filters and limits at the database level to reduce memory usage and transfer size.
+     */
+    public function getLatestPublishedExcept(string $slug, int $limit = 3)
+    {
+        $params = [
+            'select' => 'id, title, slug, published_at',
+            'where' => [
+                'status' => 'published',
+                'slug !=' => $slug
+            ],
+            'orderBy' => 'published_at',
+            'direction' => 'desc',
+            'limit' => $limit
+        ];
+
+        $cacheName = $this->generateKey('latest_except_' . $slug, $params);
+
+        if ($this->cacheEnabled && $this->cache !== null && ($cached = $this->cache->get($cacheName)) !== null) {
+            return $cached;
+        }
+
+        $data = $this->model
+            ->select($params['select'])
+            ->where($params['where'])
+            ->orderBy($params['orderBy'], $params['direction'])
+            ->limit($limit)
+            ->findAll();
+
+        if ($this->cacheEnabled && $this->cache !== null) {
+            $this->cache->save($cacheName, $data, $this->cacheTime);
+        }
+
+        return $data;
+    }
 }

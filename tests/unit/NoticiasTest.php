@@ -59,12 +59,14 @@ final class NoticiasTest extends CIUnitTestCase
     {
         $slug = 'test-news-1';
         $mockNews = [
-            'id'           => 1,
-            'title'        => 'Test News 1',
-            'summary'      => 'Summary 1',
-            'slug'         => $slug,
-            'content'      => 'Content 1',
-            'published_at' => '2023-10-27 10:00:00',
+            'id'               => 1,
+            'title'            => 'Test News 1',
+            'summary'          => 'Summary 1',
+            'slug'             => $slug,
+            'content'          => 'Content 1',
+            'published_at'     => '2023-10-27 10:00:00',
+            'meta_title'       => 'Meta Title',
+            'meta_description' => 'Meta Description',
         ];
 
         $relatedNews = [
@@ -83,7 +85,8 @@ final class NoticiasTest extends CIUnitTestCase
             ->willReturn($mockNews);
 
         $serviceMock->expects($this->once())
-            ->method('getAll')
+            ->method('getLatestPublishedExcept')
+            ->with($slug, 3)
             ->willReturn($relatedNews);
 
         Services::injectMock('news', $serviceMock);

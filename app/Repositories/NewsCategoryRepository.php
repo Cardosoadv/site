@@ -27,19 +27,7 @@ class NewsCategoryRepository extends BaseRepository
      */
     public function getByName(string $name)
     {
-        $cacheName = $this->generateKey('name_' . $name, $name);
-
-        if ($this->cacheEnabled && $this->cache !== null && ($cached = $this->cache->get($cacheName)) !== null) {
-            return $cached;
-        }
-
-        $data = $this->model->where('name', $name)->first();
-
-        if ($this->cacheEnabled && $this->cache !== null && $data) {
-            $this->cache->save($cacheName, $data, $this->cacheTime);
-        }
-
-        return $data;
+        return $this->first('*', ['name' => $name]);
     }
 
     /**
@@ -47,18 +35,6 @@ class NewsCategoryRepository extends BaseRepository
      */
     public function getBySlug(string $slug)
     {
-        $cacheName = $this->generateKey('slug_' . $slug, $slug);
-
-        if ($this->cacheEnabled && $this->cache !== null && ($cached = $this->cache->get($cacheName)) !== null) {
-            return $cached;
-        }
-
-        $data = $this->model->where('slug', $slug)->first();
-
-        if ($this->cacheEnabled && $this->cache !== null && $data) {
-            $this->cache->save($cacheName, $data, $this->cacheTime);
-        }
-
-        return $data;
+        return $this->first('*', ['slug' => $slug]);
     }
 }

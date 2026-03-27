@@ -38,19 +38,10 @@ class Noticias extends BaseController
         }
 
         $data['news']    = $news;
-        $data['related'] = $this->service->getAll(
-            'id, title, slug, published_at',
-            ['status' => 'published'],
-            'published_at',
-            'desc'
-        );
 
-        // Remove o artigo atual dos relacionados
-        $data['related'] = array_filter(
-            $data['related'],
-            fn($item) => $item['slug'] !== $slug
-        );
-        $data['related'] = array_slice(array_values($data['related']), 0, 3);
+        // Optimization: Use the specialized service method to fetch filtered related news
+        // at the database level instead of fetching all and filtering in PHP.
+        $data['related'] = $this->service->getLatestPublishedExcept($slug, 3);
 
         return view('noticias/show', $data);
     }

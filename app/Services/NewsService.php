@@ -14,16 +14,13 @@ class NewsService extends BaseService
 
     public function getBySlug(string $slug): mixed
     {
-        $result = $this->repository->findAll(
+        return $this->repository->findBySlug(
+            $slug,
             'news.*, news_categories.name as category_name',
-            ['news.slug' => $slug],
-            null,
-            null,
             [
                 ['news_categories', 'news.category_id = news_categories.id', 'left']
             ]
         );
-        return !empty($result) ? $result[0] : null;
     }
 
     public function getCategories()
@@ -86,6 +83,11 @@ class NewsService extends BaseService
         }
 
         return $deleted;
+    }
+
+    public function getLatestPublishedExcept(string $slug, int $limit = 3)
+    {
+        return $this->repository->getLatestPublishedExcept($slug, $limit);
     }
 
     /**
