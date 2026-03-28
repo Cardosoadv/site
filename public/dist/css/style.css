@@ -42,6 +42,11 @@ body {
   overflow-x: hidden;
 }
 
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
 a {
   color: var(--bs-link-color);
   text-decoration: var(--bs-link-decoration);

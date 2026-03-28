@@ -5,7 +5,7 @@
             <h2 class="section-title reveal" style="color:var(--cream);">Inicie sua consulta com especialistas</h2>
 
             <div class="contact-detail">
-                <div class="contact-detail-icon">📍</div>
+                <div class="contact-detail-icon" aria-hidden="true">📍</div>
                 <div class="contact-detail-text">
                     <span>Endereço</span>
                     <p>Rua Roberto Lúcio Aroeira, 417, Sala 01<br>Bairro Itapoã — Belo Horizonte / MG</p>
@@ -13,7 +13,7 @@
             </div>
 
             <div class="contact-detail">
-                <div class="contact-detail-icon">📞</div>
+                <div class="contact-detail-icon" aria-hidden="true">📞</div>
                 <div class="contact-detail-text">
                     <span>Telefone / WhatsApp</span>
                     <p>(31) 9.9224-6996</p>
@@ -21,7 +21,7 @@
             </div>
 
             <div class="contact-detail">
-                <div class="contact-detail-icon">✉</div>
+                <div class="contact-detail-icon" aria-hidden="true">✉</div>
                 <div class="contact-detail-text">
                     <span>E-mail</span>
                     <p>contato@cardosoebruno.adv.br</p>
