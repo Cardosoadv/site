@@ -65,6 +65,7 @@ final class NoticiasTest extends CIUnitTestCase
             'slug'             => $slug,
             'content'          => 'Content 1',
             'published_at'     => '2023-10-27 10:00:00',
+            'category_name'    => 'Direito Civil',
             'meta_title'       => 'Meta Title',
             'meta_description' => 'Meta Description',
         ];

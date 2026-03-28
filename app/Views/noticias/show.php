@@ -70,7 +70,7 @@
                     <div class="news-card-content">
                         <span class="news-date"><?= date('d/m/Y', strtotime($rel['published_at'])) ?></span>
                         <h5 class="news-card-title" style="font-size: 1.1rem;"><?= esc($rel['title']) ?></h5>
-                        <a href="<?= base_url('noticias/' . $rel['slug']) ?>" class="card-tag">Ler artigo</a>
+                        <a href="<?= base_url('noticias/' . $rel['slug']) ?>" class="card-tag" aria-label="Ler artigo: <?= esc($rel['title']) ?>">Ler artigo</a>
                     </div>
                 </div>
             </div>
