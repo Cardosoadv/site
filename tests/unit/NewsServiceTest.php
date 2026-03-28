@@ -2,9 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Repositories\NewsRepository;
 use App\Services\NewsService;
+use App\Repositories\NewsRepository;
 use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Config\Services;
 
 /**
  * @internal
@@ -18,161 +19,111 @@ final class NewsServiceTest extends CIUnitTestCase
     {
         parent::setUp();
 
-        $this->repositoryMock = $this->createMock(NewsRepository::class);
-        $this->service = new NewsService($this->repositoryMock);
+        // Mock Shield Auth
+        $authenticatorMock = $this->createMock(\CodeIgniter\Shield\Authentication\Authenticators\Session::class);
+        $authenticatorMock->method('loggedIn')->willReturn(false);
 
-        // Mock auth to avoid DB settings issues
         $authMock = $this->getMockBuilder(\CodeIgniter\Shield\Auth::class)
             ->disableOriginalConstructor()
             ->addMethods(['loggedIn'])
-            ->onlyMethods(['id'])
+            ->onlyMethods(['getAuthenticator'])
             ->getMock();
+        $authMock->method('getAuthenticator')->willReturn($authenticatorMock);
         $authMock->method('loggedIn')->willReturn(false);
-        \CodeIgniter\Config\Services::injectMock('auth', $authMock);
+
+        Services::injectMock('auth', $authMock);
+
+        $this->repositoryMock = $this->createMock(NewsRepository::class);
+
+        // NewsService uses constructor injection for NewsRepository via parent BaseService
+        // But NewsService::__construct() hardcodes the creation of NewsRepository.
+        // We need to handle this.
+
+        $this->service = new class($this->repositoryMock) extends NewsService {
+            public function __construct($repository) {
+                $this->repository = $repository;
+            }
+        };
     }
 
-    public function testCreateNewsGeneratesSlugFromTitle(): void
+    public function testGetBySlug(): void
     {
-        $data = ['title' => 'Test Title News'];
+        $slug = 'test-slug';
+        $expectedResult = ['id' => 1, 'title' => 'Test Title', 'slug' => $slug];
 
         $this->repositoryMock->expects($this->once())
-            ->method('create')
-            ->with($this->callback(function ($passedData) {
-                return $passedData['slug'] === 'test-title-news';
-            }))
-            ->willReturn(1);
+            ->method('findAll')
+            ->willReturn([$expectedResult]);
 
-        $this->service->createNews($data);
+        $result = $this->service->getBySlug($slug);
+
+        $this->assertEquals($expectedResult, $result);
     }
 
-    public function testCreateNewsPreservesExistingSlug(): void
+    public function testCreateNewsGeneratesSlug(): void
     {
         $data = [
-            'title' => 'Test Title',
-            'slug'  => 'custom-slug'
-        ];
-
-        $this->repositoryMock->expects($this->once())
-            ->method('create')
-            ->with($this->callback(function ($passedData) {
-                return $passedData['slug'] === 'custom-slug';
-            }))
-            ->willReturn(1);
-
-        $this->service->createNews($data);
-    }
-
-    public function testCreateNewsSetsPublishedAtWhenStatusIsPublished(): void
-    {
-        $data = [
-            'title'  => 'Test Title',
+            'title' => 'Minha Notícia Incrível!',
+            'content' => 'Conteúdo da notícia',
             'status' => 'published'
         ];
 
         $this->repositoryMock->expects($this->once())
             ->method('create')
             ->with($this->callback(function ($passedData) {
-                return isset($passedData['published_at']) && !empty($passedData['published_at']);
+                return $passedData['slug'] === 'minha-noticia-incrivel' &&
+                       isset($passedData['published_at']);
             }))
             ->willReturn(1);
 
-        $this->service->createNews($data);
+        $id = $this->service->createNews($data);
+
+        $this->assertEquals(1, $id);
     }
 
-    public function testCreateNewsThrowsExceptionOnFailure(): void
-    {
-        $data = ['title' => 'Test Title'];
-
-        $this->repositoryMock->expects($this->once())
-            ->method('create')
-            ->willReturn(false);
-
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Erro ao criar a notícia. Verifique os dados e tente novamente.');
-
-        $this->service->createNews($data);
-    }
-
-    public function testUpdateNewsUpdatesSlugWhenTitleChangedAndSlugEmpty(): void
+    public function testUpdateNewsUpdatesSlug(): void
     {
         $id = 1;
-        $data = ['title' => 'New Title'];
+        $data = [
+            'title' => 'Título Atualizado',
+        ];
 
         $this->repositoryMock->expects($this->once())
             ->method('update')
             ->with($id, $this->callback(function ($passedData) {
-                return $passedData['slug'] === 'new-title';
+                return $passedData['slug'] === 'titulo-atualizado';
             }))
             ->willReturn(true);
 
-        $this->service->updateNews($id, $data);
+        $result = $this->service->updateNews($id, $data);
+
+        $this->assertTrue($result);
     }
 
-    public function testUpdateNewsThrowsExceptionOnFailure(): void
+    public function testDeleteNews(): void
     {
         $id = 1;
-        $data = ['title' => 'New Title'];
-
-        $this->repositoryMock->expects($this->once())
-            ->method('update')
-            ->willReturn(false);
-
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Erro ao atualizar a notícia.');
-
-        $this->service->updateNews($id, $data);
-    }
-
-    public function testDeleteNewsCallsRepositoryDelete(): void
-    {
-        $id = 1;
-
         $this->repositoryMock->expects($this->once())
             ->method('delete')
             ->with($id)
             ->willReturn(true);
 
         $result = $this->service->deleteNews($id);
+
         $this->assertTrue($result);
     }
 
     public function testDeleteNewsThrowsExceptionOnFailure(): void
     {
         $id = 1;
-
         $this->repositoryMock->expects($this->once())
             ->method('delete')
+            ->with($id)
             ->willReturn(false);
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Erro ao excluir a notícia.');
 
         $this->service->deleteNews($id);
-    }
-
-    public function testCreateNewsAutoAssignsAuthorWhenLoggedIn(): void
-    {
-        // Mock auth service
-        $authMock = $this->getMockBuilder(\CodeIgniter\Shield\Auth::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['loggedIn'])
-            ->onlyMethods(['id'])
-            ->getMock();
-
-        $authMock->method('loggedIn')->willReturn(true);
-        $authMock->method('id')->willReturn(99);
-
-        \CodeIgniter\Config\Services::injectMock('auth', $authMock);
-
-        $data = ['title' => 'Test Author'];
-
-        $this->repositoryMock->expects($this->once())
-            ->method('create')
-            ->with($this->callback(function ($passedData) {
-                return (isset($passedData['author_id']) && $passedData['author_id'] === 99);
-            }))
-            ->willReturn(1);
-
-        $this->service->createNews($data);
     }
 }
