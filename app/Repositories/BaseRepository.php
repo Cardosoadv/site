@@ -100,6 +100,8 @@ abstract class BaseRepository
      * @param string|null $orderBy
      * @param string|null $direction
      * @param array $joins Ex: [['table', 'cond', 'type']]
+     * @param int|null $limit
+     * @param int $offset
      * @return array|object|null
      */
     public function findAll(
@@ -107,9 +109,11 @@ abstract class BaseRepository
         array $where            = [],
         ?string $orderBy        = null,
         ?string $direction      = null,
-        array $joins            = []
+        array $joins            = [],
+        ?int $limit             = null,
+        int $offset             = 0
     ): mixed {
-        $params = [$select, $where, $orderBy, $direction, $joins];
+        $params = [$select, $where, $orderBy, $direction, $joins, $limit, $offset];
         $cacheName = $this->generateKey('all', $params);
 
         if ($this->cacheEnabled && $this->cache !== null && ($cached = $this->cache->get($cacheName)) !== null) {
@@ -128,6 +132,10 @@ abstract class BaseRepository
 
         if ($orderBy && $direction) {
             $builder->orderBy($orderBy, $direction);
+        }
+
+        if ($limit !== null) {
+            $builder->limit($limit, $offset);
         }
 
         $data = $builder->findAll();

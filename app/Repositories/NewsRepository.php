@@ -20,22 +20,22 @@ class NewsRepository extends BaseRepository
 
     public function getNewsByCategory(int $categoryId, int $limit = 10)
     {
-        return $this->findAll('*', ['category_id' => $categoryId], 'published_at', 'desc');
+        return $this->findAll('*', ['category_id' => $categoryId], 'published_at', 'desc', [], $limit);
     }
 
     public function getNewsByAuthor(int $authorId, int $limit = 10)
     {
-        return $this->findAll('*', ['author_id' => $authorId], 'published_at', 'desc');
+        return $this->findAll('*', ['author_id' => $authorId], 'published_at', 'desc', [], $limit);
     }
 
     public function getNewsByStatus(string $status, int $limit = 10)
     {
-        return $this->findAll('*', ['status' => $status], 'published_at', 'desc');
+        return $this->findAll('*', ['status' => $status], 'published_at', 'desc', [], $limit);
     }
 
     public function getNewsByStatusAndCategory(string $status, int $categoryId, int $limit = 10)
     {
-        return $this->findAll('*', ['status' => $status, 'category_id' => $categoryId], 'published_at', 'desc');
+        return $this->findAll('*', ['status' => $status, 'category_id' => $categoryId], 'published_at', 'desc', [], $limit);
     }
 
     public function getCategories()
@@ -69,37 +69,20 @@ class NewsRepository extends BaseRepository
     /**
      * Get latest published news excluding a specific slug.
      * Optimization: Filters and limits at the database level to reduce memory usage and transfer size.
+     * Leveraging the base findAll to benefit from centralized caching and builder logic.
      */
     public function getLatestPublishedExcept(string $slug, int $limit = 3)
     {
-        $params = [
-            'select' => 'id, title, slug, published_at',
-            'where' => [
+        return $this->findAll(
+            'id, title, slug, published_at',
+            [
                 'status' => 'published',
                 'slug !=' => $slug
             ],
-            'orderBy' => 'published_at',
-            'direction' => 'desc',
-            'limit' => $limit
-        ];
-
-        $cacheName = $this->generateKey('latest_except_' . $slug, $params);
-
-        if ($this->cacheEnabled && $this->cache !== null && ($cached = $this->cache->get($cacheName)) !== null) {
-            return $cached;
-        }
-
-        $data = $this->model
-            ->select($params['select'])
-            ->where($params['where'])
-            ->orderBy($params['orderBy'], $params['direction'])
-            ->limit($limit)
-            ->findAll();
-
-        if ($this->cacheEnabled && $this->cache !== null) {
-            $this->cache->save($cacheName, $data, $this->cacheTime);
-        }
-
-        return $data;
+            'published_at',
+            'desc',
+            [],
+            $limit
+        );
     }
 }
