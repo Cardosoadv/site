@@ -68,4 +68,31 @@ final class BaseRepositoryTest extends CIUnitTestCase
 
         $repository->clearCache();
     }
+
+    public function testFirstCachesResult(): void
+    {
+        // Setup mock model
+        $modelMock = $this->getMockBuilder(TestModel::class)
+            ->addMethods(['select', 'where', 'join'])
+            ->onlyMethods(['first'])
+            ->getMock();
+
+        $modelMock->method('select')->willReturnSelf();
+        $modelMock->method('where')->willReturnSelf();
+        $modelMock->method('join')->willReturnSelf();
+        $modelMock->expects($this->once())
+            ->method('first')
+            ->willReturn(['id' => 1, 'name' => 'test']);
+
+        // Setup repository
+        $repository = new TestRepository($modelMock);
+
+        // First call - should hit model
+        $this->cacheMock->method('get')->willReturn(null);
+        $this->cacheMock->expects($this->once())
+            ->method('save');
+
+        $result = $repository->first('*', ['id' => 1]);
+        $this->assertEquals(['id' => 1, 'name' => 'test'], $result);
+    }
 }
