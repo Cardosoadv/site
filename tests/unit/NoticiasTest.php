@@ -42,7 +42,7 @@ final class NoticiasTest extends CIUnitTestCase
         $serviceMock = $this->createMock(NewsService::class);
         $serviceMock->expects($this->once())
             ->method('getAll')
-            ->with('*', ['status' => 'published'], 'published_at', 'desc')
+            ->with('id, title, slug, summary, published_at', ['status' => 'published'], 'published_at', 'desc', [], 12)
             ->willReturn($mockNews);
 
         Services::injectMock('news', $serviceMock);

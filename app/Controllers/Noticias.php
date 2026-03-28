@@ -17,11 +17,15 @@ class Noticias extends BaseController
 
     public function index(): string
     {
+        // Optimization: Fetch only required fields and limit results
+        // This avoids loading LONGTEXT content field for list view, reducing memory usage.
         $data['news'] = $this->service->getAll(
-            '*',
+            'id, title, slug, summary, published_at',
             ['status' => 'published'],
             'published_at',
-            'desc'
+            'desc',
+            [],
+            12
         );
 
         return view('noticias/index', $data);
