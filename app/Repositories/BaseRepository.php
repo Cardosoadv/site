@@ -56,12 +56,52 @@ abstract class BaseRepository
     }
 
     /**
+     * Busca um único registro com suporte a Join e Filtros.
+     * @param string|array $select
+     * @param array $where
+     * @param array $joins Ex: [['table', 'cond', 'type']]
+     * @return array|object|null
+     */
+    public function first(
+        string|array $select = '*',
+        array $where         = [],
+        array $joins         = []
+    ): mixed {
+        $params = [$select, $where, $joins];
+        $cacheName = $this->generateKey('first', $params);
+
+        if ($this->cacheEnabled && $this->cache !== null && ($cached = $this->cache->get($cacheName)) !== null) {
+            return $cached;
+        }
+
+        $builder = $this->model->select($select);
+
+        foreach ($joins as $join) {
+            $builder->join($join[0], $join[1], $join[2] ?? 'inner');
+        }
+
+        if (!empty($where)) {
+            $builder->where($where);
+        }
+
+        $data = $builder->first();
+
+        if ($this->cacheEnabled && $this->cache !== null && $data) {
+            $this->cache->save($cacheName, $data, $this->cacheTime);
+        }
+
+        return $data;
+    }
+
+    /**
      * Busca registros com suporte a Join, Filtros e Ordenação.
      * @param string|array $select
      * @param array $where
      * @param string|null $orderBy
      * @param string|null $direction
      * @param array $joins Ex: [['table', 'cond', 'type']]
+     * @param int|null $limit
+     * @param int $offset
      * @return array|object|null
      */
     public function findAll(
@@ -69,9 +109,11 @@ abstract class BaseRepository
         array $where            = [],
         ?string $orderBy        = null,
         ?string $direction      = null,
-        array $joins            = []
+        array $joins            = [],
+        ?int $limit             = null,
+        int $offset             = 0
     ): mixed {
-        $params = [$select, $where, $orderBy, $direction, $joins];
+        $params = [$select, $where, $orderBy, $direction, $joins, $limit, $offset];
         $cacheName = $this->generateKey('all', $params);
 
         if ($this->cacheEnabled && $this->cache !== null && ($cached = $this->cache->get($cacheName)) !== null) {
@@ -90,6 +132,10 @@ abstract class BaseRepository
 
         if ($orderBy && $direction) {
             $builder->orderBy($orderBy, $direction);
+        }
+
+        if ($limit !== null) {
+            $builder->limit($limit, $offset);
         }
 
         $data = $builder->findAll();

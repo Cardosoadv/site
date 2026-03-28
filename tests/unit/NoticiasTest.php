@@ -42,7 +42,7 @@ final class NoticiasTest extends CIUnitTestCase
         $serviceMock = $this->createMock(NewsService::class);
         $serviceMock->expects($this->once())
             ->method('getAll')
-            ->with('*', ['status' => 'published'], 'published_at', 'desc')
+            ->with('id, title, slug, summary, published_at', ['status' => 'published'], 'published_at', 'desc', [], 12)
             ->willReturn($mockNews);
 
         Services::injectMock('news', $serviceMock);
@@ -65,9 +65,9 @@ final class NoticiasTest extends CIUnitTestCase
             'slug'             => $slug,
             'content'          => 'Content 1',
             'published_at'     => '2023-10-27 10:00:00',
+            'category_name'    => 'Direito Civil',
             'meta_title'       => 'Meta Title',
             'meta_description' => 'Meta Description',
-            'category_name'    => 'Category 1',
         ];
 
         $relatedNews = [
@@ -86,7 +86,8 @@ final class NoticiasTest extends CIUnitTestCase
             ->willReturn($mockNews);
 
         $serviceMock->expects($this->once())
-            ->method('getAll')
+            ->method('getLatestPublishedExcept')
+            ->with($slug, 3)
             ->willReturn($relatedNews);
 
         Services::injectMock('news', $serviceMock);

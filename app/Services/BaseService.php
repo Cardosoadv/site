@@ -18,9 +18,11 @@ abstract class BaseService
         array $where = [],
         ?string $orderBy = null,
         ?string $direction = null,
-        array $joins = []
+        array $joins = [],
+        ?int $limit = null,
+        int $offset = 0
     ): mixed {
-        return $this->repository->findAll($select, $where, $orderBy, $direction, $joins);
+        return $this->repository->findAll($select, $where, $orderBy, $direction, $joins, $limit, $offset);
     }
 
     public function getById(int|string $id, string|array $select = '*'): mixed
