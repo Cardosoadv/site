@@ -31,7 +31,7 @@
                                 <p class="news-card-excerpt"><?= esc($article['summary']) ?></p>
                                 <div class="news-card-footer">
                                     <span class="news-date"><?= date('d/m/Y', strtotime($article['published_at'])) ?></span>
-                                    <a href="<?= base_url('noticias/' . $article['slug']) ?>" class="card-tag">Ler mais</a>
+                                    <a href="<?= base_url('noticias/' . $article['slug']) ?>" class="card-tag" aria-label="Ler mais sobre <?= esc($article['title']) ?>">Ler mais</a>
                                 </div>
                             </div>
                         </article>
