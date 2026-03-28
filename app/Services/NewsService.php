@@ -7,9 +7,9 @@ use App\Models\NewsModel;
 
 class NewsService extends BaseService
 {
-    public function __construct()
+    public function __construct(?NewsRepository $repository = null)
     {
-        parent::__construct(new NewsRepository(new NewsModel()));
+        parent::__construct($repository ?? new NewsRepository(new NewsModel()));
     }
 
     public function getBySlug(string $slug): mixed

@@ -25,7 +25,9 @@ class Services extends BaseService
             return static::getSharedInstance('news');
         }
 
-        return new \App\Services\NewsService();
+        $repository = new \App\Repositories\NewsRepository(new \App\Models\NewsModel());
+
+        return new \App\Services\NewsService($repository);
     }
 
     public static function crmContact($getShared = true)
