@@ -8,9 +8,9 @@ class CrmContactService extends BaseService
 {
 
 
-    public function __construct()
+    public function __construct(?CrmContactRepository $repository = null)
     {
-        $this->repository = new CrmContactRepository();
+        parent::__construct($repository ?? new CrmContactRepository());
     }
 
     #################################################################

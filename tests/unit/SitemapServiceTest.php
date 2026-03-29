@@ -33,13 +33,7 @@ final class SitemapServiceTest extends CIUnitTestCase
 
         Services::injectMock('cache', $this->cacheMock);
 
-        $this->service = new class($this->repositoryMock, $this->newsServiceMock, $this->cacheMock) extends SitemapService {
-            public function __construct($repository, $newsService, $cache) {
-                $this->repository = $repository;
-                $this->newsService = $newsService;
-                $this->cron = $cache;
-            }
-        };
+        $this->service = new SitemapService($this->repositoryMock, $this->newsServiceMock, $this->cacheMock);
     }
 
     public function testGetSitemapLinksFromCache(): void
