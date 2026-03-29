@@ -18,11 +18,11 @@ class Contatos extends BaseController
     {
         $data['title'] = 'Gerenciar Contatos';
         
-        // Fetch all contacts with their area names using join
+        // Optimization: Fetch only required fields for the list view to reduce memory and DB load.
         $data['contacts'] = $this->service->getAll(
-            'crm_contacts.*, crm_areas.area_interesse as area_name',
+            'crm_contacts.id, crm_contacts.name, crm_contacts.email, crm_contacts.phone, crm_contacts.status, crm_contacts.created_at, crm_areas.area_interesse as area_name',
             [],
-            'created_at',
+            'crm_contacts.created_at',
             'desc',
             [['crm_areas', 'crm_contacts.area_interesse = crm_areas.id', 'left']]
         );
