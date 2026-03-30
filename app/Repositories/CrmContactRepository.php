@@ -9,10 +9,10 @@ class CrmContactRepository extends BaseRepository
 {
     protected CrmAreaModel $crmAreaModel;
 
-    public function __construct()
+    public function __construct(?CrmContactModel $model = null, ?CrmAreaModel $areaModel = null)
     {
-        parent::__construct(new CrmContactModel());
-        $this->crmAreaModel = new CrmAreaModel();
+        parent::__construct($model ?? new CrmContactModel());
+        $this->crmAreaModel = $areaModel ?? new CrmAreaModel();
         $this->cacheKey = 'crm_contacts';
         $this->cacheTime = 60 * 60 * 24 * 7;
         $this->cacheEnabled = true;

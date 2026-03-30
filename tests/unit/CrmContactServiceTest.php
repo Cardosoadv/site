@@ -24,11 +24,7 @@ final class CrmContactServiceTest extends CIUnitTestCase
             ->onlyMethods(['create', 'getAreaById', 'getAreas'])
             ->getMock();
 
-        $this->service = new class($this->repositoryMock) extends CrmContactService {
-            public function __construct($repository) {
-                $this->repository = $repository;
-            }
-        };
+        $this->service = new CrmContactService($this->repositoryMock);
     }
 
     public function testCreateSendsEmail(): void

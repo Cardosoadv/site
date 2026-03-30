@@ -36,7 +36,9 @@ class Services extends BaseService
             return static::getSharedInstance('crmContact');
         }
 
-        return new \App\Services\CrmContactService();
+        $repository = new \App\Repositories\CrmContactRepository();
+
+        return new \App\Services\CrmContactService($repository);
     }
 
     public static function sitemap($getShared = true)
