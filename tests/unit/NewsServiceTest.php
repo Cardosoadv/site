@@ -52,8 +52,8 @@ final class NewsServiceTest extends CIUnitTestCase
         $expectedResult = ['id' => 1, 'title' => 'Test Title', 'slug' => $slug];
 
         $this->repositoryMock->expects($this->once())
-            ->method('findAll')
-            ->willReturn([$expectedResult]);
+            ->method('findBySlug')
+            ->willReturn($expectedResult);
 
         $result = $this->service->getBySlug($slug);
 
