@@ -7,6 +7,9 @@ use App\Models\NewsModel;
 
 class NewsService extends BaseService
 {
+    /**
+     * Constructor with dependency injection support.
+     */
     public function __construct(?NewsRepository $repository = null)
     {
         parent::__construct($repository ?? new NewsRepository(new NewsModel()));

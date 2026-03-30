@@ -12,12 +12,15 @@ class SitemapService extends BaseService
     protected NewsService $newsService;
 
     protected CacheInterface $cron; //Usando o cache para registrar tempo
-    public function __construct()
-    {
-        $this->repository = new SitemapRepository();
-        $this->newsService = new NewsService();
-        $this->cron = service('cache');
-        parent::__construct($this->repository);
+
+    public function __construct(
+        ?SitemapRepository $repository = null,
+        ?NewsService $newsService = null,
+        ?CacheInterface $cache = null
+    ) {
+        $this->newsService = $newsService ?? service('news');
+        $this->cron = $cache ?? service('cache');
+        parent::__construct($repository ?? new SitemapRepository());
     }
 
     public function getSitemapLinks(): array

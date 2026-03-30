@@ -35,15 +35,7 @@ final class NewsServiceTest extends CIUnitTestCase
 
         $this->repositoryMock = $this->createMock(NewsRepository::class);
 
-        // NewsService uses constructor injection for NewsRepository via parent BaseService
-        // But NewsService::__construct() hardcodes the creation of NewsRepository.
-        // We need to handle this.
-
-        $this->service = new class($this->repositoryMock) extends NewsService {
-            public function __construct($repository) {
-                $this->repository = $repository;
-            }
-        };
+        $this->service = new NewsService($this->repositoryMock);
     }
 
     public function testGetBySlug(): void
@@ -53,6 +45,7 @@ final class NewsServiceTest extends CIUnitTestCase
 
         $this->repositoryMock->expects($this->once())
             ->method('findBySlug')
+            ->with($slug, $this->anything(), $this->anything())
             ->willReturn($expectedResult);
 
         $result = $this->service->getBySlug($slug);
@@ -125,5 +118,28 @@ final class NewsServiceTest extends CIUnitTestCase
         $this->expectExceptionMessage('Erro ao excluir a notícia.');
 
         $this->service->deleteNews($id);
+    }
+
+    public function testCreateNewsThrowsExceptionOnFailure(): void
+    {
+        $data = ['title' => 'Test'];
+        $this->repositoryMock->method('create')->willReturn(false);
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Erro ao criar a notícia.');
+
+        $this->service->createNews($data);
+    }
+
+    public function testUpdateNewsThrowsExceptionOnFailure(): void
+    {
+        $id = 1;
+        $data = ['title' => 'Test'];
+        $this->repositoryMock->method('update')->willReturn(false);
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Erro ao atualizar a notícia.');
+
+        $this->service->updateNews($id, $data);
     }
 }
