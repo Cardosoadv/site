@@ -17,6 +17,7 @@ class Noticias extends BaseController
     public function index(): string
     {
         $data['title'] = 'Gerenciar Notícias';
+        // Optimization: Fetch only required fields for the list view to reduce memory and DB load.
 
         // Optimization: Fetch only required fields and limit results
         // This avoids loading the content (LONGTEXT) field for the list view,

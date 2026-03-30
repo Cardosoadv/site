@@ -18,6 +18,7 @@ class Contatos extends BaseController
     {
         $data['title'] = 'Gerenciar Contatos';
         
+        // Optimization: Fetch only required fields for the list view to reduce memory and DB load.
         // Optimization: Fetch only required fields and limit results
         // This avoids loading the message (TEXT) field for the list view,
         // reducing memory usage and database transfer size.
