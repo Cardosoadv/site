@@ -7,7 +7,7 @@ namespace App\Controllers;
 class Pagina extends BaseController
 
 {
-    private $alowedPages = [
+    private $allowedPages = [
         'direito-civil',
         'direito-administrativo',
         'contratos-negocios',
@@ -16,7 +16,7 @@ class Pagina extends BaseController
 
     public function index($slug)
     {
-        if (!in_array($slug, $this->alowedPages)) {
+        if (!in_array($slug, $this->allowedPages)) {
             return redirect()->to(base_url());
         }
         $data = [
