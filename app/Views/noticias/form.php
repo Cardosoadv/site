@@ -39,9 +39,10 @@
                 </div>
             </div>
 
-            <div class="mb-4">
+            <div class="mb-4 position-relative">
                 <label for="summary" class="form-label fw-bold">Resumo / Linha Fina (Summary)</label>
-                <textarea name="summary" id="summary" class="form-control" rows="3" placeholder="Digite um breve resumo da notícia"></textarea>
+                <textarea name="summary" id="summary" class="form-control" rows="3" maxlength="500" placeholder="Digite um breve resumo da notícia"></textarea>
+                <div id="summaryCount" class="text-end small mt-1" style="color: var(--gray);">0 / 500</div>
             </div>
 
             <!-- Editor de Texto Rico (Rich Text) -->
@@ -146,6 +147,19 @@
         // Reseta o input para permitir enviar a mesma imagem novamente se necessário
         input.value = '';
     }
+
+    // --- Lógica do Contador de Caracteres para o Resumo ---
+    const summaryInput = document.getElementById('summary');
+    const summaryCount = document.getElementById('summaryCount');
+
+    function updateSummaryCount() {
+        const length = summaryInput.value.length;
+        summaryCount.textContent = `${length} / 500`;
+        summaryCount.style.color = length >= 450 ? '#dc3545' : (length >= 400 ? '#ffc107' : 'var(--gray)');
+    }
+
+    summaryInput.addEventListener('input', updateSummaryCount);
+    updateSummaryCount(); // Inicializa
 
     // Sincroniza o conteúdo da div editável com o input hidden antes de enviar o form
     document.getElementById('newsForm').addEventListener('submit', function(e) {
