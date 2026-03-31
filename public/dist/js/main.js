@@ -70,3 +70,17 @@ function lancarToast(tipo, mensagem) {
         toastElement.remove();
     });
 }
+
+// Contact form loading state
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function() {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Enviando...';
+            }
+        });
+    }
+});

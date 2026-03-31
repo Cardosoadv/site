@@ -18,7 +18,7 @@
 
         <div class="hero-right col">
             <div class="hero-img-container"></div>
-            <div class="hero-overlay-text">§</div>
+            <div class="hero-overlay-text" aria-hidden="true">§</div>
             <div class="hero-stats">
                 <div class="stat">
                     <div class="stat-num">7+</div>
