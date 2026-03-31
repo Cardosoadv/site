@@ -17,7 +17,14 @@
         </div>
 
         <div class="hero-right col">
-            <div class="hero-img-container"></div>
+            <div class="hero-img-container">
+                <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&q=80"
+                     alt="Escritório de Advocacia"
+                     class="hero-img"
+                     fetchpriority="high"
+                     loading="eager">
+                <div class="hero-gradient-overlay"></div>
+            </div>
             <div class="hero-overlay-text">§</div>
             <div class="hero-stats">
                 <div class="stat">
