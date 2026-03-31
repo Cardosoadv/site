@@ -15,16 +15,32 @@ final class NewsServiceTest extends CIUnitTestCase
     public function testCreateNewsThrowsExceptionOnFailure(): void
     {
         // 1. Arrange
-        $newsService = new NewsService();
-
         // Mock the repository
-        $repositoryMock = $this->createMock(NewsRepository::class);
+        $repositoryMock = $this->getMockBuilder(NewsRepository::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['create'])
+            ->getMock();
+
         $repositoryMock->expects($this->once())
             ->method('create')
             ->willReturn(false);
 
-        // Inject the mock repository using Reflection
+        // Mock auth() helper
+        $authMock = $this->getMockBuilder(\CodeIgniter\Shield\Auth::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['loggedIn'])
+            ->onlyMethods(['id'])
+            ->getMock();
+        $authMock->method('loggedIn')->willReturn(false);
+        $authMock->method('id')->willReturn(null);
+
+        \Config\Services::injectMock('auth', $authMock);
+
+        // Create the service without calling constructor
         $reflection = new ReflectionClass(NewsService::class);
+        $newsService = $reflection->newInstanceWithoutConstructor();
+
+        // Inject the mock repository using Reflection
         $property = $reflection->getProperty('repository');
         $property->setAccessible(true);
         $property->setValue($newsService, $repositoryMock);

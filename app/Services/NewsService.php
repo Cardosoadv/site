@@ -10,6 +10,7 @@ class NewsService extends BaseService
     public function __construct()
     {
         parent::__construct(new NewsRepository(new NewsModel()));
+        helper('url');
     }
 
     public function getBySlug(string $slug): mixed
@@ -33,8 +34,6 @@ class NewsService extends BaseService
 
     public function createNews(array $data): int|string
     {
-        helper('url');
-        
         // Auto-generate slug from title if not provided or empty
         if (empty($data['slug']) && !empty($data['title'])) {
             $data['slug'] = $this->makeSlug($data['title']);
@@ -61,8 +60,6 @@ class NewsService extends BaseService
 
     public function updateNews(int $id, array $data): bool
     {
-        helper('url');
-
         // Update slug if title changed and slug is not manually changed
         if (empty($data['slug']) && !empty($data['title'])) {
             $data['slug'] = $this->makeSlug($data['title']);
@@ -94,8 +91,6 @@ class NewsService extends BaseService
      */
     private function makeSlug(string $title): string
     {
-        helper('url');
-
         // Transliterate accented chars to ASCII (e.g. "ã" -> "a", "ê" -> "e")
         $ascii = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title);
 
