@@ -40,7 +40,7 @@ class NewsRepository extends BaseRepository
 
     public function getCategories()
     {
-        return $this->newsCategoryRepository->getAll();
+        return $this->newsCategoryRepository->findAll();
     }
 
     public function getCategoryById(int $id)
