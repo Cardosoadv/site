@@ -34,6 +34,13 @@ class NewsService extends BaseService
 
     public function createNews(array $data): int|string
     {
+        helper(['url', 'security']);
+
+        // Sanitize content to prevent XSS
+        if (isset($data['content'])) {
+            $data['content'] = sanitize_html($data['content']);
+        }
+        
         // Auto-generate slug from title if not provided or empty
         if (empty($data['slug']) && !empty($data['title'])) {
             $data['slug'] = $this->makeSlug($data['title']);
@@ -60,6 +67,13 @@ class NewsService extends BaseService
 
     public function updateNews(int $id, array $data): bool
     {
+        helper(['url', 'security']);
+
+        // Sanitize content to prevent XSS
+        if (isset($data['content'])) {
+            $data['content'] = sanitize_html($data['content']);
+        }
+
         // Update slug if title changed and slug is not manually changed
         if (empty($data['slug']) && !empty($data['title'])) {
             $data['slug'] = $this->makeSlug($data['title']);
