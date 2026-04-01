@@ -46,7 +46,6 @@ final class NewsServiceTest extends CIUnitTestCase
         $this->repositoryMock->expects($this->once())
             ->method('findBySlug')
             ->with($slug, 'news.*, news_categories.name as category_name', [['news_categories', 'news.category_id = news_categories.id', 'left']])
-            ->with($slug, $this->anything(), $this->anything())
             ->willReturn($expectedResult);
 
         $result = $this->service->getBySlug($slug);
@@ -127,7 +126,7 @@ final class NewsServiceTest extends CIUnitTestCase
         $this->repositoryMock->method('create')->willReturn(false);
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Erro ao criar a notícia.');
+        $this->expectExceptionMessage('Erro ao criar a notícia. Verifique os dados e tente novamente.');
 
         $this->service->createNews($data);
     }
