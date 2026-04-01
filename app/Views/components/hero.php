@@ -11,13 +11,20 @@
                 Especialistas em Direito Civil e Administrativo, atuando com rigor técnico e comprometimento ético na defesa dos interesses de pessoas físicas, empresas e entidades em todo o estado de Minas Gerais.
             </p>
             <div class="hero-actions">
-                <button class="btn-primary" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">Fale com um Advogado</button>
-                <button class="btn-ghost" onclick="document.getElementById('expertise').scrollIntoView({behavior:'smooth'})">Nossas Especialidades</button>
+                <a href="#contato" class="btn-primary text-decoration-none">Fale com um Advogado</a>
+                <a href="#expertise" class="btn-ghost text-decoration-none">Nossas Especialidades</a>
             </div>
         </div>
 
         <div class="hero-right col">
-            <div class="hero-img-container"></div>
+            <div class="hero-img-container">
+                <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&q=80"
+                     alt="Escritório de Advocacia"
+                     class="hero-img"
+                     fetchpriority="high"
+                     loading="eager">
+                <div class="hero-gradient-overlay"></div>
+            </div>
             <div class="hero-overlay-text">§</div>
             <div class="hero-stats">
                 <div class="stat">

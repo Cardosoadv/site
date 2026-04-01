@@ -3,6 +3,12 @@
 <?= $this->section('content') ?>
 
 <header class="news-hero">
+    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1600&q=80"
+         alt="Fundo de Notícias"
+         class="news-hero-img"
+         fetchpriority="high"
+         loading="eager">
+    <div class="news-hero-overlay"></div>
     <div class="section-eyebrow news-hero-eyebrow">Conteúdo Jurídico</div>
     <h1 class="hero-title">Artigos & <em>Atualizações</em></h1>
     <p class="hero-sub mx-auto">

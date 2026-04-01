@@ -47,6 +47,10 @@ class Services extends BaseService
             return static::getSharedInstance('sitemap');
         }
 
-        return new \App\Services\SitemapService();
+        $repository  = new \App\Repositories\SitemapRepository();
+        $newsService = static::news();
+        $cache       = static::cache();
+
+        return new \App\Services\SitemapService($repository, $newsService, $cache);
     }
 }

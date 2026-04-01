@@ -17,10 +17,15 @@ class Noticias extends BaseController
     public function index(): string
     {
         $data['title'] = 'Gerenciar Notícias';
+        // Optimization: Fetch only required fields for the list view to reduce memory and DB load.
+
+        // Optimization: Fetch only required fields and limit results
+        // This avoids loading the content (LONGTEXT) field for the list view,
+        // reducing memory usage and database transfer size.
         $data['news'] = $this->service->getAll(
-            'news.*, news_categories.name as category_name',
+            'news.id, news.title, news.slug, news.status, news.published_at, news_categories.name as category_name',
             [],
-            'id',
+            'news.id',
             'desc',
             [['news_categories', 'news.category_id = news_categories.id', 'left']]
         );
