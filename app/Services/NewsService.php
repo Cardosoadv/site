@@ -10,6 +10,7 @@ class NewsService extends BaseService
     public function __construct()
     {
         parent::__construct(new NewsRepository(new NewsModel()));
+        helper('url');
     }
 
     public function getBySlug(string $slug): mixed
@@ -104,8 +105,6 @@ class NewsService extends BaseService
      */
     private function makeSlug(string $title): string
     {
-        helper('url');
-
         // Transliterate accented chars to ASCII (e.g. "ã" -> "a", "ê" -> "e")
         $ascii = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title);
 
