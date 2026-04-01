@@ -15,14 +15,6 @@ class NewsCategoryRepository extends BaseRepository
     }
 
     /**
-     * Get all categories.
-     */
-    public function getAll()
-    {
-        return $this->findAll();
-    }
-
-    /**
      * Get category by Name with cache.
      */
     public function getByName(string $name)

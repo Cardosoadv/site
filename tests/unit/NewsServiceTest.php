@@ -6,6 +6,7 @@ use App\Services\NewsService;
 use App\Repositories\NewsRepository;
 use CodeIgniter\Test\CIUnitTestCase;
 use ReflectionClass;
+use CodeIgniter\Config\Services;
 
 /**
  * @internal
@@ -14,6 +15,12 @@ final class NewsServiceTest extends CIUnitTestCase
 {
     public function testCreateNewsThrowsExceptionOnFailure(): void
     {
+        // Mock setting helper/service to avoid database access
+        $settingsMock = $this->getMockBuilder('CodeIgniter\Settings\Settings')
+            ->disableOriginalConstructor()
+            ->getMock();
+        Services::injectMock('settings', $settingsMock);
+
         // 1. Arrange
         // Mock the repository
         $repositoryMock = $this->getMockBuilder(NewsRepository::class)
