@@ -52,7 +52,7 @@
             <?= csrf_field() ?>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="nome">Nome completo</label>
+                    <label for="nome">Nome completo <span class="text-danger" aria-hidden="true">*</span></label>
                     <input type="text" id="nome" name="nome" placeholder="Seu nome" required autocomplete="name">
                 </div>
                 <div class="form-group">
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="email">E-mail</label>
+                <label for="email">E-mail <span class="text-danger" aria-hidden="true">*</span></label>
                 <input type="email" id="email" name="email" placeholder="seu@email.com" required autocomplete="email">
             </div>
             <div class="form-group">
@@ -83,7 +83,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="mensagem">Descreva brevemente sua situação</label>
+                <label for="mensagem">Descreva brevemente sua situação <span class="text-danger" aria-hidden="true">*</span></label>
                 <textarea id="mensagem" name="mensagem" placeholder="Como podemos ajudá-lo?" required></textarea>
             </div>
             <button type="submit" class="btn-primary" style="align-self:flex-start; padding: 1rem 2.5rem;">Enviar Consulta</button>
