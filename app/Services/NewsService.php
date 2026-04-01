@@ -5,6 +5,9 @@ namespace App\Services;
 use App\Repositories\NewsRepository;
 use App\Models\NewsModel;
 
+/**
+ * @property NewsRepository $repository
+ */
 class NewsService extends BaseService
 {
     /**

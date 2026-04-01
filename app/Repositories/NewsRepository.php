@@ -63,7 +63,7 @@ class NewsRepository extends BaseRepository
      */
     public function findBySlug(string $slug, string|array $select = '*', array $joins = [])
     {
-        return $this->first($select, ['slug' => $slug], $joins);
+        return $this->first($select, ['news.slug' => $slug], $joins);
     }
 
     /**
@@ -77,7 +77,7 @@ class NewsRepository extends BaseRepository
             'id, title, slug, published_at',
             [
                 'status' => 'published',
-                'slug !=' => $slug
+                'news.slug !=' => $slug
             ],
             'published_at',
             'desc',
