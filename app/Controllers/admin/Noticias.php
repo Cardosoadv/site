@@ -49,7 +49,8 @@ class Noticias extends BaseController
     {
         $data['title'] = 'Editar Notícia';
         $data['news'] = $this->service->getBySlug($slug);
-        return view('admin/noticias/form');
+        $data['categories'] = $this->service->getCategories();
+        return view('noticias/form', $data);
     }
 
     public function store()
