@@ -11,7 +11,7 @@ class Contatos extends BaseController
 
     public function __construct()
     {
-        $this->service = new CrmContactService();
+        $this->service = service('crmContact');
     }
 
     public function index(): string

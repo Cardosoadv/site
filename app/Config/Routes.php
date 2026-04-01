@@ -22,7 +22,7 @@ service('auth')->routes($routes);
 
 $routes->group('admin', ['filter' => 'session'], function ($routes) {
     // Dashboard (Landing Page)
-    $routes->get('/', 'admin\Dashboard::index');
+    $routes->get('/', 'admin\Dashboard::index', ['as' => 'admin_dashboard']);
 
     // Noticias
     $routes->get('noticias', 'admin\Noticias::index');
