@@ -39,9 +39,10 @@
                 </div>
             </div>
 
-            <div class="mb-4">
+            <div class="mb-4 position-relative">
                 <label for="summary" class="form-label fw-bold">Resumo / Linha Fina (Summary)</label>
-                <textarea name="summary" id="summary" class="form-control" rows="3" placeholder="Digite um breve resumo da notícia"></textarea>
+                <textarea name="summary" id="summary" class="form-control" rows="3" maxlength="500" placeholder="Digite um breve resumo da notícia"></textarea>
+                <div id="summaryCount" class="text-end small mt-1" style="color: var(--gray);">0 / 500</div>
             </div>
 
             <!-- Editor de Texto Rico (Rich Text) -->
@@ -49,34 +50,34 @@
                 <label class="form-label fw-bold">Conteúdo da Notícia</label>
                 <div class="rich-text-editor">
                     <div class="editor-toolbar">
-                        <button type="button" onclick="formatDoc('bold')" title="Negrito"><i class="bi bi-type-bold"></i></button>
-                        <button type="button" onclick="formatDoc('italic')" title="Itálico"><i class="bi bi-type-italic"></i></button>
-                        <button type="button" onclick="formatDoc('underline')" title="Sublinhado"><i class="bi bi-type-underline"></i></button>
-                        <button type="button" onclick="formatDoc('strikethrough')" title="Tachado"><i class="bi bi-type-strikethrough"></i></button>
+                        <button type="button" onclick="formatDoc('bold')" title="Negrito" aria-label="Negrito"><i class="bi bi-type-bold"></i></button>
+                        <button type="button" onclick="formatDoc('italic')" title="Itálico" aria-label="Itálico"><i class="bi bi-type-italic"></i></button>
+                        <button type="button" onclick="formatDoc('underline')" title="Sublinhado" aria-label="Sublinhado"><i class="bi bi-type-underline"></i></button>
+                        <button type="button" onclick="formatDoc('strikethrough')" title="Tachado" aria-label="Tachado"><i class="bi bi-type-strikethrough"></i></button>
 
                         <span class="toolbar-divider"></span>
 
-                        <button type="button" onclick="formatDoc('formatBlock', 'H2')" title="Título 2"><b>H2</b></button>
-                        <button type="button" onclick="formatDoc('formatBlock', 'H3')" title="Título 3"><b>H3</b></button>
-                        <button type="button" onclick="formatDoc('formatBlock', 'P')" title="Parágrafo"><b>P</b></button>
-                        <button type="button" onclick="formatDoc('formatBlock', 'BLOCKQUOTE')" title="Citação"><i class="bi bi-quote"></i></button>
+                        <button type="button" onclick="formatDoc('formatBlock', 'H2')" title="Título 2" aria-label="Título 2"><b>H2</b></button>
+                        <button type="button" onclick="formatDoc('formatBlock', 'H3')" title="Título 3" aria-label="Título 3"><b>H3</b></button>
+                        <button type="button" onclick="formatDoc('formatBlock', 'P')" title="Parágrafo" aria-label="Parágrafo"><b>P</b></button>
+                        <button type="button" onclick="formatDoc('formatBlock', 'BLOCKQUOTE')" title="Citação" aria-label="Citação"><i class="bi bi-quote"></i></button>
 
                         <span class="toolbar-divider"></span>
 
-                        <button type="button" onclick="formatDoc('justifyLeft')" title="Alinhar à Esquerda"><i class="bi bi-text-left"></i></button>
-                        <button type="button" onclick="formatDoc('justifyCenter')" title="Centralizar"><i class="bi bi-text-center"></i></button>
-                        <button type="button" onclick="formatDoc('justifyRight')" title="Alinhar à Direita"><i class="bi bi-text-right"></i></button>
+                        <button type="button" onclick="formatDoc('justifyLeft')" title="Alinhar à Esquerda" aria-label="Alinhar à Esquerda"><i class="bi bi-text-left"></i></button>
+                        <button type="button" onclick="formatDoc('justifyCenter')" title="Centralizar" aria-label="Centralizar"><i class="bi bi-text-center"></i></button>
+                        <button type="button" onclick="formatDoc('justifyRight')" title="Alinhar à Direita" aria-label="Alinhar à Direita"><i class="bi bi-text-right"></i></button>
 
                         <span class="toolbar-divider"></span>
 
-                        <button type="button" onclick="formatDoc('insertUnorderedList')" title="Lista com Marcadores"><i class="bi bi-list-ul"></i></button>
-                        <button type="button" onclick="formatDoc('insertOrderedList')" title="Lista Numerada"><i class="bi bi-list-ol"></i></button>
+                        <button type="button" onclick="formatDoc('insertUnorderedList')" title="Lista com Marcadores" aria-label="Lista com Marcadores"><i class="bi bi-list-ul"></i></button>
+                        <button type="button" onclick="formatDoc('insertOrderedList')" title="Lista Numerada" aria-label="Lista Numerada"><i class="bi bi-list-ol"></i></button>
 
                         <span class="toolbar-divider"></span>
 
-                        <button type="button" onclick="addLink()" title="Inserir Link"><i class="bi bi-link-45deg"></i></button>
-                        <button type="button" onclick="formatDoc('unlink')" title="Remover Link"><i class="bi bi-link-45deg text-danger" style="text-decoration: line-through;"></i></button>
-                        <button type="button" onclick="document.getElementById('editorImageUpload').click()" title="Inserir Imagem no Texto"><i class="bi bi-image"></i></button>
+                        <button type="button" onclick="addLink()" title="Inserir Link" aria-label="Inserir Link"><i class="bi bi-link-45deg"></i></button>
+                        <button type="button" onclick="formatDoc('unlink')" title="Remover Link" aria-label="Remover Link"><i class="bi bi-link-45deg text-danger" style="text-decoration: line-through;"></i></button>
+                        <button type="button" onclick="document.getElementById('editorImageUpload').click()" title="Inserir Imagem no Texto" aria-label="Inserir Imagem no Texto"><i class="bi bi-image"></i></button>
                         <input type="file" id="editorImageUpload" class="d-none" accept="image/*" onchange="insertImage(this)">
                     </div>
 
@@ -146,6 +147,19 @@
         // Reseta o input para permitir enviar a mesma imagem novamente se necessário
         input.value = '';
     }
+
+    // --- Lógica do Contador de Caracteres para o Resumo ---
+    const summaryInput = document.getElementById('summary');
+    const summaryCount = document.getElementById('summaryCount');
+
+    function updateSummaryCount() {
+        const length = summaryInput.value.length;
+        summaryCount.textContent = `${length} / 500`;
+        summaryCount.style.color = length >= 450 ? '#dc3545' : (length >= 400 ? '#ffc107' : 'var(--gray)');
+    }
+
+    summaryInput.addEventListener('input', updateSummaryCount);
+    updateSummaryCount(); // Inicializa
 
     // Sincroniza o conteúdo da div editável com o input hidden antes de enviar o form
     document.getElementById('newsForm').addEventListener('submit', function(e) {

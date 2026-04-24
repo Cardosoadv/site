@@ -17,11 +17,17 @@ class Noticias extends BaseController
 
     public function index(): string
     {
+        $data['title'] = 'Cardoso & Bruno Sociedade de Advogados | Notícias';
+        $data['metaDescription'] = 'Notícias e artigos sobre Direito Civil, Administrativo e Advocacia Colaborativa. Especialistas em Direito Civil, Administrativo e Contratos. Atendimento estratégico e Advocacia Colaborativa em Belo Horizonte e Juatuba.';
+        $data['metaKeywords'] = 'notícias direito civil, notícias direito administrativo, notícias advocacia colaborativa, notícias belo horizonte, notícias juatuba';
+
         $data['news'] = $this->service->getAll(
-            '*',
+            'id, title, slug, summary, published_at',
             ['status' => 'published'],
             'published_at',
-            'desc'
+            'desc',
+            [],
+            12
         );
 
         return view('noticias/index', $data);
@@ -38,19 +44,12 @@ class Noticias extends BaseController
         }
 
         $data['news']    = $news;
-        $data['related'] = $this->service->getAll(
-            'id, title, slug, published_at',
-            ['status' => 'published'],
-            'published_at',
-            'desc'
-        );
 
-        // Remove o artigo atual dos relacionados
-        $data['related'] = array_filter(
-            $data['related'],
-            fn($item) => $item['slug'] !== $slug
-        );
-        $data['related'] = array_slice(array_values($data['related']), 0, 3);
+        $data['title'] = 'Cardoso & Bruno Sociedade de Advogados | ' . $news['title'];
+        $data['metaDescription'] = $news['meta_description'] ?: 'Notícias e artigos sobre Direito Civil, Administrativo e Advocacia Colaborativa. Especialistas em Direito Civil, Administrativo e Contratos. Atendimento estratégico e Advocacia Colaborativa em Belo Horizonte e Juatuba.';
+        $data['metaKeywords'] = 'notícias direito civil, notícias direito administrativo, notícias advocacia colaborativa, notícias belo horizonte, notícias juatuba';
+
+        $data['related'] = $this->service->getLatestPublishedExcept($slug, 3);
 
         return view('noticias/show', $data);
     }

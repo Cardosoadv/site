@@ -25,7 +25,9 @@ class Services extends BaseService
             return static::getSharedInstance('news');
         }
 
-        return new \App\Services\NewsService();
+        $repository = new \App\Repositories\NewsRepository(new \App\Models\NewsModel());
+
+        return new \App\Services\NewsService($repository);
     }
 
     public static function crmContact($getShared = true)
@@ -34,17 +36,21 @@ class Services extends BaseService
             return static::getSharedInstance('crmContact');
         }
 
-        return new \App\Services\CrmContactService();
+        $repository = new \App\Repositories\CrmContactRepository();
+
+        return new \App\Services\CrmContactService($repository);
     }
 
-    /*
-     * public static function example($getShared = true)
-     * {
-     *     if ($getShared) {
-     *         return static::getSharedInstance('example');
-     *     }
-     *
-     *     return new \CodeIgniter\Example();
-     * }
-     */
+    public static function sitemap($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('sitemap');
+        }
+
+        $repository  = new \App\Repositories\SitemapRepository();
+        $newsService = static::news();
+        $cache       = static::cache();
+
+        return new \App\Services\SitemapService($repository, $newsService, $cache);
+    }
 }

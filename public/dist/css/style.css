@@ -42,6 +42,11 @@ body {
   overflow-x: hidden;
 }
 
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
 a {
   color: var(--bs-link-color);
   text-decoration: var(--bs-link-decoration);
@@ -240,10 +245,22 @@ nav {
 .hero-img-container {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(135deg, rgba(13, 27, 42, 0.6) 0%, transparent 60%),
-    url("https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&q=80")
-      center/cover no-repeat;
+}
+
+.hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(13, 27, 42, 0.6) 0%, transparent 60%);
+  z-index: 2;
 }
 
 .hero-overlay-text {
@@ -730,13 +747,32 @@ footer {
 
 /* Hero Section para Notícias */
 .news-hero {
-  background:
-    linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)),
-    url("https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1600&q=80")
-      center/cover no-repeat;
+  position: relative;
+  overflow: hidden;
   padding: 5rem 5vw 5rem;
   text-align: center;
   border-bottom: 2px solid var(--gold);
+}
+
+.news-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.news-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 27, 42, 0.85);
+  z-index: 2;
+}
+
+.news-hero > *:not(img):not(.news-hero-overlay) {
+  position: relative;
+  z-index: 3;
 }
 
 /* Eyebrow centralizado no hero (sem a linha decorativa ::before) */

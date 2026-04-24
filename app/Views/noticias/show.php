@@ -13,6 +13,12 @@
 <?= $this->section('content') ?>
 
 <div class="news-hero" style="height: 400px; padding-top: 8rem;">
+    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1600&q=80"
+         alt="Fundo de Notícias"
+         class="news-hero-img"
+         fetchpriority="high"
+         loading="eager">
+    <div class="news-hero-overlay"></div>
     <div class="container">
         <a href="<?= base_url('noticias') ?>" class="article-tag" style="text-decoration: none; border: 1px solid var(--gold); padding: 5px 15px; color: var(--gold);">
             &larr; Voltar para a listagem
@@ -70,7 +76,7 @@
                     <div class="news-card-content">
                         <span class="news-date"><?= date('d/m/Y', strtotime($rel['published_at'])) ?></span>
                         <h5 class="news-card-title" style="font-size: 1.1rem;"><?= esc($rel['title']) ?></h5>
-                        <a href="<?= base_url('noticias/' . $rel['slug']) ?>" class="card-tag">Ler artigo</a>
+                        <a href="<?= base_url('noticias/' . $rel['slug']) ?>" class="card-tag" aria-label="Ler artigo: <?= esc($rel['title']) ?>">Ler artigo</a>
                     </div>
                 </div>
             </div>

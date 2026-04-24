@@ -68,4 +68,133 @@ final class BaseRepositoryTest extends CIUnitTestCase
 
         $repository->clearCache();
     }
+
+    public function testFirstCachesResult(): void
+    {
+        // Setup mock model
+        $modelMock = $this->getMockBuilder(TestModel::class)
+            ->addMethods(['select', 'where', 'join'])
+            ->onlyMethods(['first'])
+            ->getMock();
+
+        $modelMock->method('select')->willReturnSelf();
+        $modelMock->method('where')->willReturnSelf();
+        $modelMock->method('join')->willReturnSelf();
+        $modelMock->expects($this->once())
+            ->method('first')
+            ->willReturn(['id' => 1, 'name' => 'test']);
+
+        // Setup repository
+        $repository = new TestRepository($modelMock);
+
+        // First call - should hit model
+        $this->cacheMock->method('get')->willReturn(null);
+        $this->cacheMock->expects($this->once())
+            ->method('save');
+
+        $result = $repository->first('*', ['id' => 1]);
+        $this->assertEquals(['id' => 1, 'name' => 'test'], $result);
+    }
+
+    public function testFindAllCachesResult(): void
+    {
+        $modelMock = $this->getMockBuilder(TestModel::class)
+            ->addMethods(['select', 'where', 'orderBy', 'limit', 'join'])
+            ->onlyMethods(['findAll'])
+            ->getMock();
+
+        $modelMock->method('select')->willReturnSelf();
+        $modelMock->method('where')->willReturnSelf();
+        $modelMock->method('orderBy')->willReturnSelf();
+        $modelMock->method('limit')->willReturnSelf();
+        $modelMock->method('join')->willReturnSelf();
+
+        $expected = [['id' => 1], ['id' => 2]];
+        $modelMock->expects($this->once())->method('findAll')->willReturn($expected);
+
+        $repository = new TestRepository($modelMock);
+
+        $this->cacheMock->method('get')->willReturn(null);
+        $this->cacheMock->expects($this->once())->method('save');
+
+        $result = $repository->findAll();
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testFindByIdCachesResult(): void
+    {
+        $modelMock = $this->getMockBuilder(TestModel::class)
+            ->addMethods(['select'])
+            ->onlyMethods(['find'])
+            ->getMock();
+
+        $modelMock->method('select')->willReturnSelf();
+
+        $expected = ['id' => 1];
+        $modelMock->expects($this->once())->method('find')->with(1)->willReturn($expected);
+
+        $repository = new TestRepository($modelMock);
+
+        $this->cacheMock->method('get')->willReturn(null);
+        $this->cacheMock->expects($this->once())->method('save');
+
+        $result = $repository->findById(1);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testCreateClearsCache(): void
+    {
+        $modelMock = $this->getMockBuilder(TestModel::class)
+            ->onlyMethods(['insert'])
+            ->getMock();
+        $modelMock->method('insert')->willReturn(1);
+
+        $repository = new TestRepository($modelMock);
+
+        $this->cacheMock->expects($this->once())->method('deleteMatching')->with('test_table*');
+
+        $repository->create(['name' => 'new']);
+    }
+
+    public function testUpdateClearsCache(): void
+    {
+        $modelMock = $this->getMockBuilder(TestModel::class)
+            ->onlyMethods(['update'])
+            ->getMock();
+        $modelMock->method('update')->willReturn(true);
+
+        $repository = new TestRepository($modelMock);
+
+        $this->cacheMock->expects($this->once())->method('deleteMatching')->with('test_table*');
+
+        $repository->update(1, ['name' => 'updated']);
+    }
+
+    public function testDeleteClearsCache(): void
+    {
+        $modelMock = $this->getMockBuilder(TestModel::class)
+            ->onlyMethods(['delete'])
+            ->getMock();
+        $modelMock->method('delete')->willReturn(true);
+
+        $repository = new TestRepository($modelMock);
+
+        $this->cacheMock->expects($this->once())->method('deleteMatching')->with('test_table*');
+
+        $repository->delete(1);
+    }
+
+    public function testCreateBatchClearsCache(): void
+    {
+        $modelMock = $this->getMockBuilder(TestModel::class)
+            ->onlyMethods(['insertBatch'])
+            ->getMock();
+        $modelMock->method('insertBatch')->willReturn(2);
+
+        $repository = new TestRepository($modelMock);
+
+        $this->cacheMock->expects($this->once())->method('deleteMatching')->with('test_table*');
+
+        $repository->createBatch([['name' => 'a'], ['name' => 'b']]);
+    }
 }

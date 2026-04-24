@@ -1,5 +1,6 @@
 {
     "name": "cardosoadv/site",
+    "version": "3.7.3",
     "description": "Site Institucional e Painel Administrativo",
     "license": "MIT",
     "type": "project",

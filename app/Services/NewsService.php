@@ -5,26 +5,29 @@ namespace App\Services;
 use App\Repositories\NewsRepository;
 use App\Models\NewsModel;
 
+/**
+ * @property NewsRepository $repository
+ */
 class NewsService extends BaseService
 {
-    public function __construct()
+    /**
+     * Constructor with dependency injection support.
+     */
+    public function __construct(?NewsRepository $repository = null)
     {
-        parent::__construct(new NewsRepository(new NewsModel()));
+        parent::__construct($repository ?? new NewsRepository(new NewsModel()));
         helper('url');
     }
 
     public function getBySlug(string $slug): mixed
     {
-        $result = $this->repository->findAll(
+        return $this->repository->findBySlug(
+            $slug,
             'news.*, news_categories.name as category_name',
-            ['news.slug' => $slug],
-            null,
-            null,
             [
                 ['news_categories', 'news.category_id = news_categories.id', 'left']
             ]
         );
-        return !empty($result) ? $result[0] : null;
     }
 
     public function getCategories()
@@ -97,6 +100,11 @@ class NewsService extends BaseService
         }
 
         return $deleted;
+    }
+
+    public function getLatestPublishedExcept(string $slug, int $limit = 3)
+    {
+        return $this->repository->getLatestPublishedExcept($slug, $limit);
     }
 
     /**
