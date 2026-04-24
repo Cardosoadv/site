@@ -24,6 +24,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= $title ?? 'Cardoso & Bruno Sociedade de Advogados' ?></title>
+<meta name="description" content="<?= $metaDescription ?? 'Cardoso & Bruno Sociedade de Advogados: Especialistas em Direito Civil, Administrativo e Contratos. Atendimento estratégico e Advocacia Colaborativa em Belo Horizonte e Juatuba.' ?>">
+<meta name="keywords" content="<?= $metaKeywords ?? 'advogado belo horizonte, advocacia juatuba, direito administrativo mg, consultoria jurídica civil, elaboração de contratos, advocacia colaborativa, Cardoso e Bruno Sociedade de Advogados, OAB MG' ?>"><meta name="keywords" content="<?= $metaKeywords ?? 'advocacia, advogado, direito civil, direito administrativo, contratos, advocacia colaborativa, minas gerais, belo horizonte' ?>">
 <link rel="icon" type="image/x-icon" href="<?= base_url('public/favicon.ico'); ?>">
 
 <!-- Fontes e Estilos -->
