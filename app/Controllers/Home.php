@@ -16,7 +16,9 @@ class Home extends BaseController
     public function index(): string
     {
         $data['areas'] = $this->service->getAreas();
-
+        $data['title'] = 'Cardoso & Bruno Sociedade de Advogados | Excelência Jurídica';
+        $data['metaDescription'] = 'Cardoso & Bruno Sociedade de Advogados: Especialistas em Direito Civil, Administrativo e Contratos. Atendimento estratégico e Advocacia Colaborativa em Belo Horizonte e Juatuba.';
+        $data['metaKeywords'] = 'advogado belo horizonte, inventários, divórcios, advocacia juatuba, direito administrativo mg, consultoria jurídica civil, elaboração de contratos, advocacia colaborativa, Cardoso e Bruno Sociedade de Advogados, OAB MG';
         return view('template/layout', $data);
     }
 

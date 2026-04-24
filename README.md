@@ -1,4 +1,4 @@
-# Cardoso & Bruno Sociedade de Advogados
+# Cardoso & Bruno Sociedade de Advogados (v3.7.3)
 
 Este projeto é um site desenvolvido com o framework [CodeIgniter 4](https://codeigniter.com/), contando com uma área pública e um painel administrativo seguro.
 
@@ -13,7 +13,7 @@ Este projeto é um site desenvolvido com o framework [CodeIgniter 4](https://cod
   - Sistema de cache persistente para otimização de performance.
   - Atualização automática baseada em notícias publicadas.
 - **Relatório de Evolução**:
-  - Registro detalhado de melhorias e correções em [.antigravity/report.md].
+  - Registro detalhado de melhorias e correções em .agents/relatorio_evolucao.md.
 - **Painel Administrativo (`/admin`)**:
   - Acesso restrito para usuários autenticados (utilizando CodeIgniter Shield).
   - Dashboard centralizado atuando como hub principal do painel.

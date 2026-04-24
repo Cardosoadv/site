@@ -17,8 +17,10 @@ class Noticias extends BaseController
 
     public function index(): string
     {
-        // Optimization: Fetch only required fields and limit results
-        // This avoids loading LONGTEXT content field for list view, reducing memory usage.
+        $data['title'] = 'Cardoso & Bruno Sociedade de Advogados | Notícias';
+        $data['metaDescription'] = 'Notícias e artigos sobre Direito Civil, Administrativo e Advocacia Colaborativa. Especialistas em Direito Civil, Administrativo e Contratos. Atendimento estratégico e Advocacia Colaborativa em Belo Horizonte e Juatuba.';
+        $data['metaKeywords'] = 'notícias direito civil, notícias direito administrativo, notícias advocacia colaborativa, notícias belo horizonte, notícias juatuba';
+
         $data['news'] = $this->service->getAll(
             'id, title, slug, summary, published_at',
             ['status' => 'published'],
@@ -43,8 +45,10 @@ class Noticias extends BaseController
 
         $data['news']    = $news;
 
-        // Optimization: Use the specialized service method to fetch filtered related news
-        // at the database level instead of fetching all and filtering in PHP.
+        $data['title'] = 'Cardoso & Bruno Sociedade de Advogados | ' . $news['title'];
+        $data['metaDescription'] = $news['meta_description'] ?: 'Notícias e artigos sobre Direito Civil, Administrativo e Advocacia Colaborativa. Especialistas em Direito Civil, Administrativo e Contratos. Atendimento estratégico e Advocacia Colaborativa em Belo Horizonte e Juatuba.';
+        $data['metaKeywords'] = 'notícias direito civil, notícias direito administrativo, notícias advocacia colaborativa, notícias belo horizonte, notícias juatuba';
+
         $data['related'] = $this->service->getLatestPublishedExcept($slug, 3);
 
         return view('noticias/show', $data);
