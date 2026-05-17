@@ -1,5 +1,13 @@
 # Relatório de Evolução - Projeto Cardoso & Bruno
 
+## [3.8.1] - 2026-05-17
+### Corrigido
+- Correção no método `generateSitemap()` da classe `SitemapService.php` que estava inicializando incorretamente a variável `$links` com um nível extra de aninhamento de array (`$links[] = [...]`), impossibilitando o funcionamento correto de `createBatch()` e provocando erros no banco de dados e no PHPUnit.
+- Classe `SitemapService.php` versionada para `@version 1.0.1`.
+
+### Alterado
+- Versão do sistema atualizada para 3.8.1 em `composer.json` e `README.md`.
+
 ## [3.8.0] - 2026-05-17
 ### Adicionado
 - Reconfiguração completa da área pública para aplicação **Vue.js 3** de página única (SPA) via **Vite** e **Vue Router**.
