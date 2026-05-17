@@ -3,55 +3,95 @@
 namespace App\Controllers;
 
 use App\Services\CrmContactService;
+use App\Services\NewsService;
 
+/**
+ * Controller principal que gerencia o carregamento híbrido da SPA,
+ * pré-renderizando os metadados de SEO (SSR-Lite) para crawlers de forma dinâmica.
+ * @version 1.0.0
+ */
 class Home extends BaseController
 {
-    protected $service;
+    protected CrmContactService $crmContactService;
+    protected NewsService $newsService;
 
     public function __construct()
     {
-        $this->service = service('crmContact');
+        $this->crmContactService = service('crmContact');
+        $this->newsService = service('news');
     }
 
+    /**
+     * Ponto de entrada unificado para todas as páginas públicas da SPA.
+     * Analisa o URI e pré-carrega os metadados de SEO corretos no HTML base.
+     */
     public function index(): string
     {
-        $data['areas'] = $this->service->getAreas();
-        $data['title'] = 'Cardoso & Bruno Sociedade de Advogados | Excelência Jurídica';
-        $data['metaDescription'] = 'Cardoso & Bruno Sociedade de Advogados: Especialistas em Direito Civil, Administrativo e Contratos. Atendimento estratégico e Advocacia Colaborativa em Belo Horizonte e Juatuba.';
-        $data['metaKeywords'] = 'advogado belo horizonte, inventários, divórcios, advocacia juatuba, direito administrativo mg, consultoria jurídica civil, elaboração de contratos, advocacia colaborativa, Cardoso e Bruno Sociedade de Advogados, OAB MG';
-        return view('template/layout', $data);
-    }
+        // Valores Padrão (Home Page)
+        $title = 'Cardoso & Bruno Sociedade de Advogados | Excelência Jurídica';
+        $metaDescription = 'Cardoso & Bruno Sociedade de Advogados: Especialistas em Direito Civil, Administrativo e Contratos. Atendimento estratégico e Advocacia Colaborativa em Belo Horizonte e Juatuba.';
+        $metaKeywords = 'advogado belo horizonte, inventários, divórcios, advocacia juatuba, direito administrativo mg, consultoria jurídica civil, elaboração de contratos, advocacia colaborativa, Cardoso e Bruno Sociedade de Advogados, OAB MG';
 
-    public function receiveContact()
-    {
-        $data = $this->request->getPost();
-
-        $rules = [
-            'nome' => 'required|max_length[100]',
-            'email' => 'required|valid_email|max_length[100]',
-            'telefone' => 'max_length[20]',
-            'mensagem' => 'required',
-            'area_interesse' => 'permit_empty|integer' // Alterado para permit_empty caso use texto ao em vez de ID as vezes
-        ];
-
-        // Se o valor não for numérico, ignoramos ou setamos um default (ex: 1 para Outros) na validação.
-        // O BD exige 'area_interesse' como int.
-        $areaInteresse = isset($data['area']) && is_numeric($data['area']) ? (int) $data['area'] : 1;
-        $data['area_interesse'] = $areaInteresse;
-
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        $uri = $this->request->getUri();
+        $segments = $uri->getSegments();
+        
+        // 1. Rota de Notícias
+        if (count($segments) >= 1 && $segments[0] === 'noticias') {
+            if (count($segments) >= 2) {
+                // Detalhe de Notícia: /noticias/(:segment)
+                $slug = $segments[1];
+                $news = $this->newsService->getBySlug($slug);
+                
+                if ($news && $news['status'] === 'published') {
+                    $title = ($news['meta_title'] ?: $news['title']) . ' | Cardoso & Bruno';
+                    $metaDescription = $news['meta_description'] ?: $news['summary'];
+                }
+            } else {
+                // Listagem de Notícias: /noticias
+                $title = 'Artigos & Atualizações Jurídicas | Cardoso & Bruno Sociedade de Advogados';
+                $metaDescription = 'Notícias e artigos sobre Direito Civil, Administrativo e Advocacia Colaborativa. Análise técnica sobre as principais mudanças legislativas.';
+            }
+        }
+        
+        // 2. Rota de Páginas Estáticas: /pagina/(:segment)
+        if (count($segments) >= 2 && $segments[0] === 'pagina') {
+            $slug = $segments[1];
+            $allowedPages = [
+                'direito-civil' => [
+                    'title' => 'Direito Civil | Cardoso & Bruno Sociedade de Advogados',
+                    'description' => 'Assessoria completa em Direito Civil: obrigações, contratos, responsabilidade civil, família e sucessões com foco em soluções eficientes.'
+                ],
+                'direito-administrative' => [ // Fallback caso acesse com 'direito-administrative' ou similar
+                    'title' => 'Direito Administrativo | Cardoso & Bruno Sociedade de Advogados',
+                    'description' => 'Especialistas em Direito Administrativo, licitações, contratos públicos e defesa de interesses perante a administração pública.'
+                ],
+                'direito-administrativo' => [
+                    'title' => 'Direito Administrativo | Cardoso & Bruno Sociedade de Advogados',
+                    'description' => 'Especialistas em Direito Administrativo, licitações, contratos públicos e defesa de interesses perante a administração pública.'
+                ],
+                'contratos-negocios' => [
+                    'title' => 'Contratos e Negócios | Cardoso & Bruno Sociedade de Advogados',
+                    'description' => 'Elaboração, análise e revisão de contratos empresariais e civis, garantindo segurança jurídica para seus negócios e parcerias.'
+                ],
+                'advocacia-colaborativa' => [
+                    'title' => 'Advocacia Colaborativa | Cardoso & Bruno Sociedade de Advogados',
+                    'description' => 'Resolução de conflitos de forma consensual e humanizada. Advocacia colaborativa para divórcios, inventários e questões empresariais.'
+                ],
+            ];
+            
+            if (isset($allowedPages[$slug])) {
+                $title = $allowedPages[$slug]['title'];
+                $metaDescription = $allowedPages[$slug]['description'];
+            }
         }
 
-        $this->service->create([
-            'name' => $data['nome'],
-            'email' => $data['email'],
-            'phone' => $data['telefone'],
-            'message' => $data['mensagem'],
-            'area_interesse' => $data['area_interesse'],
-            'status' => 'new'
-        ]);
+        $data = [
+            'title'           => $title,
+            'metaDescription' => $metaDescription,
+            'metaKeywords'    => $metaKeywords,
+            'areas'           => $this->crmContactService->getAreas()
+        ];
 
-        return redirect()->back()->with('success', 'Sua mensagem foi enviada com sucesso! Entraremos em contato em breve.');
+        return view('vue_index', $data);
     }
 }

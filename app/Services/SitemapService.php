@@ -6,6 +6,10 @@ use App\Repositories\SitemapRepository;
 use App\Services\NewsService;
 use CodeIgniter\Cache\CacheInterface;
 
+/**
+ * Classe de serviço para geração de sitemap.
+ * @version 1.0.1
+ */
 class SitemapService extends BaseService
 {
 
@@ -60,35 +64,43 @@ class SitemapService extends BaseService
         $currentDate = date('Y-m-d');
 
         //Adiciona Links página Inicial
-        $links[] = [
+        $links = [
+            [
             'url'           => base_url(),
             'last_modified' => $currentDate,
             'priority'      => '1',
             'changefreq'    => 'daily',
-        ];
-        $links[] = [
+            ],[
             'url'           => base_url().'#expertise',
             'last_modified' => $currentDate,
             'priority'      => '0.8',
             'changefreq'    => 'monthly',
-        ];
-        $links[] = [
-            'url'           => base_url().'#civil',
+            ],[
+            'url'           => base_url().'pagina/direito-civil',
             'last_modified' => $currentDate,
             'priority'      => '0.8',
             'changefreq'    => 'monthly',
-        ];
-        $links[] = [
-            'url'           => base_url().'#administrativo',
+            ],[
+            'url'           => base_url().'pagina/direito-administrativo',
             'last_modified' => $currentDate,
             'priority'      => '0.8',
             'changefreq'    => 'monthly',
-        ];
-        $links[] = [
+            ],[
             'url'           => base_url().'#contato',
             'last_modified' => $currentDate,
             'priority'      => '0.8',
             'changefreq'    => 'monthly',
+            ],[
+            'url'           => base_url().'pagina/contratos-negocios',
+            'last_modified' => $currentDate,
+            'priority'      => '0.8',
+            'changefreq'    => 'monthly',
+            ],[
+            'url'           => base_url().'pagina/advocacia-colaborativa',
+            'last_modified' => $currentDate,
+            'priority'      => '0.8',
+            'changefreq'    => 'monthly',
+            ],
         ];
 
         //Adiciona Links Notícias
